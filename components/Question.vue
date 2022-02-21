@@ -7,7 +7,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col>
+      <b-col cols="12">
         <b-form-group label="Antworten" v-slot="{ ariaDescribedby }">
           <b-form-radio-group
             required
@@ -15,6 +15,9 @@
             :aria-describedby="ariaDescribedby"
             name="radios-stacked"
             stacked
+            buttons
+            class="btn-block"
+            button-variant="outline-secondary"
           >
             <b-form-radio
               v-for="option in options"
@@ -93,10 +96,10 @@ export default {
 
 <style scoped>
 .checked.correct {
-  color: green
+  color: green !important;
 }
 
 .checked.wrong {
-  color: red
+  color: red !important
 }
 </style>
