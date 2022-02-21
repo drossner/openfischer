@@ -2,6 +2,7 @@
   <MainNav>
     <b-row>
       <b-col>
+        <h3>Frage {{ question.id }} <b-badge :variant="state.variant">{{ state.text }}</b-badge></h3>
         <p>{{question.question}}</p>
       </b-col>
     </b-row>
@@ -44,8 +45,23 @@ export default {
   data: function () {
     return {
       selected: -1,
-      checked: false
+      checked: false,
+      state: {}
     }
+  },
+  async fetch() {
+    const state = await this.$localForage.getItem(this.question.id) || {correct: null}
+    if(state.correct === true) {
+      state.variant = "success"
+      state.text = "Richtig"
+    } else if(state.correct === false) {
+      state.variant = "danger"
+      state.text = "Falsch"
+    } else {
+      state.text = "Noch nicht beantwortet"
+      state.variant = "info"
+    }
+    this.state = state
   },
   computed: {
     options: function() {
@@ -57,8 +73,12 @@ export default {
     }
   },
   methods: {
-    check: function() {
+    check: async function() {
       this.checked = true
+      let correct = this.selected === this.question.correctAnswer;
+      let save = await this.$localForage.getItem(this.question.id) || {};
+      save.correct = correct;
+      await this.$localForage.setItem(this.question.id, save);
     },
     nextQuestion: function() {
       this.$content('catalog').where({ id: {$ne: this.question.id} }).only(['id']).fetch()
