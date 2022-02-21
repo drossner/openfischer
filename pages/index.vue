@@ -4,8 +4,8 @@
       <b-col>
         <b-list-group>
           <b-list-group-item v-for="qstId in qstIds" :key="qstId.id"
-                             :href='"catalog/"+qstId.id'
-          >{{ qstId.id }}
+
+          ><NuxtLink :to='"/catalog/"+qstId.id'>{{ qstId.id }}</NuxtLink>
           </b-list-group-item>
         </b-list-group>
       </b-col>

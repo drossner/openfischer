@@ -53,7 +53,7 @@ export default {
   },
 
   router: {
-    base: '/app/'
+    base: '/openfischer/'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
