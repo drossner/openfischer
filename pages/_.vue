@@ -1,7 +1,7 @@
 <template>
-  <b-container>
+  <MainNav>
     <Question :question="question"></Question>
-  </b-container>
+  </MainNav>
 </template>
 
 <script>

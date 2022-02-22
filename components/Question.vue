@@ -1,5 +1,5 @@
 <template>
-  <MainNav>
+  <div>
     <b-row>
       <b-col>
         <h3>Frage {{ question.id }} <b-badge :variant="state.variant">{{ state.text }}</b-badge></h3>
@@ -49,7 +49,7 @@
         <font-awesome-icon role="button" @click="share" :icon="['fa', 'share']" />
       </b-col>
     </b-row>
-  </MainNav>
+  </div>
 </template>
 
 <script>

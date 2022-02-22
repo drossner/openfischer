@@ -71,12 +71,37 @@ export default {
     }
   },
   methods: {
-    nextQuestion: function() {
-      this.$content('catalog').only(['id']).fetch()
-        .then(res => {
-          const next = res[Math.floor(Math.random()*res.length)].id
-          this.$router.push("/catalog/"+next)
+    nextQuestion: async function() {
+      let self = this;
+      this.$localForage.getItem("SETTINGS")
+      .then(filter => {
+        let categories = []
+        for(let entry of filter.categories) {
+          if(entry === 1) categories.push('Fischkunde');
+          else if(entry === 2) categories.push('Gewässerkunde');
+          else if(entry === 3) categories.push('Schutz und Pflege');
+          else if(entry === 4) categories.push('Fanggeräte');
+          else if(entry === 5) categories.push('Rechtsvorschriften');
+        }
+        //filter for not unanswered only at the moment
+        this.$localForage.keys()//die sind bereits beantwortet..
+        .then(answeredIds => {
+          let filteredIds = []
+          if(!filter.qsts.includes(3)) { //Beantwortet NICHT gewählt
+            filteredIds = answeredIds;
+          }
+
+          this.$content('catalog')
+            .where({category: {$in: categories},  id: {$nin: filteredIds}})
+            .only(['id']).fetch()
+            .then(res => {
+              const next = res[Math.floor(Math.random()*res.length)].id
+              this.$router.push("/catalog/"+next)
+            })
+
         })
+
+      })
     }
   },
   async fetch() {

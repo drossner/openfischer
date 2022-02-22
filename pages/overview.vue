@@ -23,7 +23,6 @@ export default {
   async fetch() {
     let questIds = await this.$content('catalog').only(['id']).fetch()
     const keys = await this.$localForage.keys()
-    console.log(keys)
     for(let qst of questIds) {
       if(keys.includes(qst.id)) {
         let save =  await this.$localForage.getItem(qst.id)
