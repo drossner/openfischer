@@ -9,7 +9,7 @@
     </b-row>
     <b-row v-if="question.picture" class="mb-4">
       <b-col>
-        <b-img :src="/img/+question.id+'.jpg'"></b-img>
+        <nuxt-picture :src="/img/+question.id+'.jpg'"></nuxt-picture>
         <div><small>Die Bilder zu den Fragen sind urheberrechtlich geschützt. Die kommerzielle Verwertung in printform oder digital darf nur mit Genehmigung des jeweiligen Bildautors erfolgen.</small></div>
         <div><small><a href="https://www.lfl.bayern.de/ifi/fischerpruefung/125173/index.php">Nutzungsbedingungen und Rechteinhaber</a></small></div>
       </b-col>

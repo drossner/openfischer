@@ -43,6 +43,7 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxt/content',
+    '@nuxt/image',
   ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
