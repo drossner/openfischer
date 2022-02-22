@@ -6,6 +6,11 @@
         <p>{{question.question}}</p>
       </b-col>
     </b-row>
+    <b-row v-if="question.picture">
+      <b-col>
+        <b-img src=""></b-img>
+      </b-col>
+    </b-row>
     <b-row>
       <b-col cols="12">
         <b-form-group label="Antworten" v-slot="{ ariaDescribedby }">
