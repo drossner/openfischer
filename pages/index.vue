@@ -1,12 +1,47 @@
 <template>
   <MainNav>
-    <b-row>
+    <b-row class="mb-5">
       <b-col>
-        <b-list-group>
+        <b-list-group v-if="false">
           <b-list-group-item v-for="qst in qstDatas" :key="qst.id" :variant="qst.variant">
             <NuxtLink :to='"/catalog/"+qst.id'>{{ qst.id }}</NuxtLink>
           </b-list-group-item>
         </b-list-group>
+        <h5>Fischkunde</h5>
+        <b-progress  :max="nFK" height="3rem" show-value>
+          <b-progress-bar :value="lCorrectFK" variant="success"></b-progress-bar>
+          <b-progress-bar :value="lWrongFK" variant="danger"></b-progress-bar>
+          <b-progress-bar :value="nFK - lCorrectFK - lWrongFK" variant="secondary"></b-progress-bar>
+        </b-progress>
+        <h5>Gewässerkunde</h5>
+        <b-progress value="3" :max="nGK" height="3rem" show-value>
+          <b-progress-bar :value="lCorrectGK" variant="success"></b-progress-bar>
+          <b-progress-bar :value="lWrongGK" variant="danger"></b-progress-bar>
+          <b-progress-bar :value="nGK - lCorrectGK - lWrongGK" variant="secondary"></b-progress-bar>
+        </b-progress>
+        <h5>Schutz und Pflege</h5>
+        <b-progress value="3" :max="nSP" height="3rem" show-value>
+          <b-progress-bar :value="lCorrectSP" variant="success"></b-progress-bar>
+          <b-progress-bar :value="lWrongSP" variant="danger"></b-progress-bar>
+          <b-progress-bar :value="nSP - lCorrectSP - lWrongSP" variant="secondary"></b-progress-bar>
+        </b-progress>
+        <h5>Fanggeräte</h5>
+        <b-progress value="3" :max="nFG" height="3rem" show-value>
+          <b-progress-bar :value="lCorrectFG" variant="success"></b-progress-bar>
+          <b-progress-bar :value="lWrongFG" variant="danger"></b-progress-bar>
+          <b-progress-bar :value="nFG - lCorrectFG - lWrongFG" variant="secondary"></b-progress-bar>
+        </b-progress>
+        <h5>Rechtsvorschriften</h5>
+        <b-progress value="3" :max="nRV" height="3rem" show-value>
+          <b-progress-bar :value="lCorrectRV" variant="success"></b-progress-bar>
+          <b-progress-bar :value="lWrongRV" variant="danger"></b-progress-bar>
+          <b-progress-bar :value="nRV - lCorrectRV - lWrongRV" variant="secondary"></b-progress-bar>
+        </b-progress>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-button variant="primary" block @click="nextQuestion">Starte mit zufälliger Frage</b-button>
       </b-col>
     </b-row>
   </MainNav>
@@ -17,27 +52,66 @@ export default {
   name: 'Home',
   data: function () {
     return {
-      qstDatas: []
+      qstDatas: [],
+      nFK: 0,
+      nGK: 0,
+      nSP: 0,
+      nFG: 0,
+      nRV: 0,
+      lCorrectFK: 0,
+      lCorrectGK: 0,
+      lCorrectSP: 0,
+      lCorrectFG: 0,
+      lCorrectRV: 0,
+      lWrongFK: 0,
+      lWrongGK: 0,
+      lWrongSP: 0,
+      lWrongFG: 0,
+      lWrongRV: 0,
+    }
+  },
+  methods: {
+    nextQuestion: function() {
+      this.$content('catalog').only(['id']).fetch()
+        .then(res => {
+          const next = res[Math.floor(Math.random()*res.length)].id
+          this.$router.push("/catalog/"+next)
+        })
     }
   },
   async fetch() {
-    let questIds = await this.$content('catalog').only(['id']).fetch()
-    const keys = await this.$localForage.keys()
-    console.log(keys)
-    for(let qst of questIds) {
-      if(keys.includes(qst.id)) {
-        let save =  await this.$localForage.getItem(qst.id)
-          let variant;
-          if(save.correct === true)
-            variant = "success";
-          else if(save.correct === false)
-            variant = "danger"
-          this.qstDatas.push({id: qst.id, variant: variant})
-      } else {
-        this.qstDatas.push({id: qst.id})
-      }
+    let FK = await this.$content('catalog').where({category: {$eq: "Fischkunde"}}).only(['id']).fetch();
+    let GK = await this.$content('catalog').where({category: {$eq: "Gewässerkunde"}}).only(['id']).fetch();
+    let SP = await this.$content('catalog').where({category: {$eq: "Schutz und Pflege"}}).only(['id']).fetch();
+    let FG = await this.$content('catalog').where({category: {$eq: "Fanggeräte"}}).only().fetch(['id']);
+    let RV = await this.$content('catalog').where({category: {$eq: "Rechtsvorschriften"}}).only(['id']).fetch();
+    this.nFK = FK.length;
+    this.nGK = GK.length;
+    this.nSP = SP.length;
+    this.nFG = FG.length;
+    this.nRV = RV.length;
 
-    }
+    //const localAnswered = await this.$localForage.keys();
+
+    await this.$localForage.iterate((value, key, i) => {
+      if(key.startsWith("1") || key.startsWith("B1")) {
+        if(value.correct) this.lCorrectFK++;
+        else this.lWrongFK++
+      } else if(key.startsWith("2") || key.startsWith("B2")) {
+        if(value.correct) this.lCorrectGK++;
+        else this.lWrongGK++
+      } else if(key.startsWith("3") || key.startsWith("B3")) {
+        if(value.correct) this.lCorrectSP++;
+        else this.lWrongSP++
+      } else if(key.startsWith("4") || key.startsWith("B4")) {
+        if(value.correct) this.lCorrectFG++;
+        else this.lWrongFG++
+      } else if(key.startsWith("5") || key.startsWith("B5")) {
+        if(value.correct) this.lCorrectRV++;
+        else this.lWrongRV++
+      }
+    });
+
   },
   computed: {
 

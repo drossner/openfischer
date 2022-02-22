@@ -70,7 +70,7 @@ export default {
       state.text = "Falsch"
     } else {
       state.text = "Noch nicht beantwortet"
-      state.variant = "info"
+      state.variant = "secondary"
     }
     this.state = state
   },

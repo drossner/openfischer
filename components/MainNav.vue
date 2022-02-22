@@ -3,6 +3,7 @@
     <b-navbar type="light" variant="light" class="mb-3">
       <b-navbar-nav>
         <b-nav-item :to="{ path: '/' }">Home</b-nav-item>
+        <b-nav-item :to="{ path: '/overview' }">Fragenübersicht</b-nav-item>
 
         <!-- Navbar dropdowns -
         <b-nav-item-dropdown text="Lang" right>
