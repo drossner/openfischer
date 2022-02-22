@@ -45,6 +45,9 @@
         <b-button variant='primary' @click="check" :disabled="selected < 0">Prüfen</b-button>
         <b-button variant='secondary' @click="nextQuestion">Zufällige nächste Frage</b-button>
       </b-col>
+      <b-col cols="1">
+        <font-awesome-icon role="button" @click="share" :icon="['fa', 'share']" />
+      </b-col>
     </b-row>
   </MainNav>
 </template>
@@ -90,6 +93,17 @@ export default {
       let save = await this.$localForage.getItem(this.question.id) || {};
       save.correct = correct;
       await this.$localForage.setItem(this.question.id, save);
+    },
+    share: function () {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Frage '+this.question.id+" ("+this.question.category+")",
+          text: this.question.question,
+          url: window.location.href,
+        })
+          .then(() => console.log('Successful share'))
+          .catch((error) => console.log('Error sharing', error));
+      }
     },
     nextQuestion: function() {
       this.$content('catalog').where({ id: {$ne: this.question.id} }).only(['id']).fetch()

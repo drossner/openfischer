@@ -35,6 +35,11 @@ export default {
     // With options
     ['@nuxtjs/localforage', { /* module options */ }],
     '@nuxt/image',
+    ['@nuxtjs/fontawesome', {
+      icons: {
+        solid: ['faShare']
+      },
+    }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
