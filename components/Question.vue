@@ -136,13 +136,6 @@ export default {
             })
 
         })
-
-
-      this.$content('catalog').where({ id: {$ne: this.question.id} }).only(['id']).fetch()
-      .then(res => {
-        const next = res[Math.floor(Math.random()*res.length)].id
-        this.$router.push("/catalog/"+next)
-      })
     }
   }
 }
