@@ -33,7 +33,8 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // With options
-    ['@nuxtjs/localforage', { /* module options */ }]
+    ['@nuxtjs/localforage', { /* module options */ }],
+    '@nuxt/image',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -43,7 +44,6 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxt/content',
-    '@nuxt/image',
   ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
