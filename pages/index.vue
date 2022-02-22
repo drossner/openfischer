@@ -71,8 +71,7 @@ export default {
     }
   },
   methods: {
-    nextQuestion: async function() {
-      let self = this;
+    nextQuestion: function() {
       this.$localForage.getItem("SETTINGS")
       .then(filter => {
         let categories = []

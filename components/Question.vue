@@ -25,13 +25,12 @@
             stacked
             buttons
             class="btn-block"
-            button-variant="outline-secondary"
+            button-variant="outline-dark"
           >
             <b-form-radio
               v-for="option in options"
               :key="option.text"
               :value="option.value"
-              :disabled="option.disabled"
               :class="{checked: checked, correct: option.correct, wrong: !option.correct}"
             >
               {{ option.text }}
@@ -106,6 +105,39 @@ export default {
       }
     },
     nextQuestion: function() {
+
+
+      this.$localForage.getItem("SETTINGS")
+        .then(filter => {
+          let categories = []
+          for(let entry of filter.categories) {
+            if(entry === 1) categories.push('Fischkunde');
+            else if(entry === 2) categories.push('Gewässerkunde');
+            else if(entry === 3) categories.push('Schutz und Pflege');
+            else if(entry === 4) categories.push('Fanggeräte');
+            else if(entry === 5) categories.push('Rechtsvorschriften');
+          }
+          //filter for not unanswered only at the moment
+          this.$localForage.keys()//die sind bereits beantwortet..
+            .then(answeredIds => {
+              let filteredIds = []
+              if(!filter.qsts.includes(3)) { //Beantwortet NICHT gewählt
+                filteredIds = answeredIds;
+              }
+
+              this.$content('catalog')
+                .where({category: {$in: categories},  id: {$nin: filteredIds, $ne: this.question.id} })
+                .only(['id']).fetch()
+                .then(res => {
+                  const next = res[Math.floor(Math.random()*res.length)].id
+                  this.$router.push("/catalog/"+next)
+                })
+
+            })
+
+        })
+
+
       this.$content('catalog').where({ id: {$ne: this.question.id} }).only(['id']).fetch()
       .then(res => {
         const next = res[Math.floor(Math.random()*res.length)].id
@@ -123,5 +155,9 @@ export default {
 
 .checked.wrong {
   color: red !important
+}
+
+.checked {
+  font-weight: bold;
 }
 </style>
