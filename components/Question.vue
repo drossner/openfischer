@@ -3,12 +3,15 @@
     <b-row>
       <b-col>
         <h3>Frage {{ question.id }} <b-badge :variant="state.variant">{{ state.text }}</b-badge></h3>
+        <small> {{question.category}} </small>
         <p>{{question.question}}</p>
       </b-col>
     </b-row>
-    <b-row v-if="question.picture">
+    <b-row v-if="question.picture" class="mb-4">
       <b-col>
-        <b-img src=""></b-img>
+        <b-img :src="/img/+question.id+'.jpg'"></b-img>
+        <div><small>Die Bilder zu den Fragen sind urheberrechtlich geschützt. Die kommerzielle Verwertung in printform oder digital darf nur mit Genehmigung des jeweiligen Bildautors erfolgen.</small></div>
+        <div><small><a href="https://www.lfl.bayern.de/ifi/fischerpruefung/125173/index.php">Nutzungsbedingungen und Rechteinhaber</a></small></div>
       </b-col>
     </b-row>
     <b-row>
