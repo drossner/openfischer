@@ -23,11 +23,17 @@ export const mutations = {
     state.initialized = true
   },
   answerQuestion(state, data) {
-    //let id = data.id
-    //let corrext = data.correct
-    let curr = state.questionLocal[data.id] || {}
-    curr.correct = data.correct
-    this.$localForage.nuxtLocalForage.setItem(data.id, curr)
+    let value = {
+      correct: data.correct
+    }
+    if(state.questionLocal[data.id] === undefined) {
+      state.questionLocal[data.id] = value
+      state.questionLocal = { ...this.state.questionLocal, ...this.state}
+    } else {
+      state.questionLocal[data.id].correct = data.correct
+    }
+
+    this.$localForage.nuxtLocalForage.setItem(data.id, value)
   }
 }
 
