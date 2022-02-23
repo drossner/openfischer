@@ -37,6 +37,12 @@
     <b-row>
       <b-col>
         <b-button variant="primary" block @click="nextQuestion">Starte mit zufälliger Frage</b-button>
+        <small><a role="button" v-b-toggle="'collapse-hint'">Tipp</a></small>
+        <b-collapse id="collapse-hint">
+          <p>In den Einstellungen oben rechts, lassen sich verschiedene Filter (de-)aktivieren. Somit können gezielt
+          Themengebiete, offene oder bereits beantwortete Fragen geübt werden. Die Filter-Einstellungen bleiben
+          auch nach einem Neustart erhalten.</p>
+        </b-collapse>
       </b-col>
     </b-row>
   </MainNav>

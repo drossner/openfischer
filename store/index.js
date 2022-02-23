@@ -2,7 +2,8 @@ export const state = () => ({
   initialized: false,
   settings: {}, //initialized with init action
   questionLocal: {}, // as settings, a id -> local data map
-  allQuestionIds: [] //to have them at hand, fast..
+  allQuestionIds: [], //to have them at hand, fast..
+  exams: []
 })
 
 export const mutations = {
@@ -22,6 +23,9 @@ export const mutations = {
   initDone(state) {
     state.initialized = true
   },
+  initExams(state, data){
+    state.exams = data
+  },
   answerQuestion(state, data) {
     let value = {
       correct: data.correct
@@ -34,6 +38,15 @@ export const mutations = {
     }
 
     this.$localForage.nuxtLocalForage.setItem(data.id, value)
+  },
+  addExam(state, exam) {
+    state.exams.push(exam)
+    this.$localForage.meta.setItem("EXAMS", this.state.exams)
+  },
+  removeExam(state, id) {
+    const index = state.exams.map(elem => elem.id).indexOf(id)
+    state.exams.splice(index, 1)
+    this.$localForage.meta.setItem("EXAMS", this.state.exams)
   }
 }
 
@@ -100,6 +113,14 @@ export const actions = {
       }
       commit('initQuestionIds', allKeys)
       commit('initQuestionLocal', tmp)
+
+      //init exams
+      let exams = await this.$localForage.meta.getItem("EXAMS")
+      if(exams === undefined || exams === null) {
+        exams = []
+        this.$localForage.meta.setItem("EXAMS", exams)
+      }
+      commit('initExams', exams)
 
       commit('initDone')
     }
