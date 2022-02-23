@@ -2,7 +2,10 @@
   <b-container>
     <b-navbar toggleable="sm" type="light" class="mb-3">
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
-      <b-navbar-brand :to="{ path: '/' }">OpenFischer</b-navbar-brand>
+      <b-navbar-brand :to="{ path: '/' }">
+        <nuxt-img width="50"  src="/icon.png"></nuxt-img>
+        OpenFischer
+      </b-navbar-brand>
       <b-collapse id="nav-text-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item :active="$nuxt.$route.path === '/'" :to="{ path: '/' }">Home</b-nav-item>
