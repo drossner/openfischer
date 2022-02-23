@@ -2,37 +2,32 @@
   <MainNav>
     <b-row class="mb-5">
       <b-col>
-        <b-list-group v-if="false">
-          <b-list-group-item v-for="qst in qstDatas" :key="qst.id" :variant="qst.variant">
-            <NuxtLink :to='"/catalog/"+qst.id'>{{ qst.id }}</NuxtLink>
-          </b-list-group-item>
-        </b-list-group>
         <h5>Fischkunde</h5>
-        <b-progress  :max="nFK" height="3rem" show-value>
+        <b-progress  :max="nFK" height="3rem" show-value class="mb-3">
           <b-progress-bar :value="lCorrectFK" variant="success"></b-progress-bar>
           <b-progress-bar :value="lWrongFK" variant="danger"></b-progress-bar>
           <b-progress-bar :value="nFK - lCorrectFK - lWrongFK" variant="secondary"></b-progress-bar>
         </b-progress>
         <h5>Gewässerkunde</h5>
-        <b-progress value="3" :max="nGK" height="3rem" show-value>
+        <b-progress value="3" :max="nGK" height="3rem" show-value class="mb-3">
           <b-progress-bar :value="lCorrectGK" variant="success"></b-progress-bar>
           <b-progress-bar :value="lWrongGK" variant="danger"></b-progress-bar>
           <b-progress-bar :value="nGK - lCorrectGK - lWrongGK" variant="secondary"></b-progress-bar>
         </b-progress>
         <h5>Schutz und Pflege</h5>
-        <b-progress value="3" :max="nSP" height="3rem" show-value>
+        <b-progress value="3" :max="nSP" height="3rem" show-value class="mb-3">
           <b-progress-bar :value="lCorrectSP" variant="success"></b-progress-bar>
           <b-progress-bar :value="lWrongSP" variant="danger"></b-progress-bar>
           <b-progress-bar :value="nSP - lCorrectSP - lWrongSP" variant="secondary"></b-progress-bar>
         </b-progress>
         <h5>Fanggeräte</h5>
-        <b-progress value="3" :max="nFG" height="3rem" show-value>
+        <b-progress value="3" :max="nFG" height="3rem" show-value class="mb-3">
           <b-progress-bar :value="lCorrectFG" variant="success"></b-progress-bar>
           <b-progress-bar :value="lWrongFG" variant="danger"></b-progress-bar>
           <b-progress-bar :value="nFG - lCorrectFG - lWrongFG" variant="secondary"></b-progress-bar>
         </b-progress>
         <h5>Rechtsvorschriften</h5>
-        <b-progress value="3" :max="nRV" height="3rem" show-value>
+        <b-progress value="3" :max="nRV" height="3rem" show-value class="mb-3">
           <b-progress-bar :value="lCorrectRV" variant="success"></b-progress-bar>
           <b-progress-bar :value="lWrongRV" variant="danger"></b-progress-bar>
           <b-progress-bar :value="nRV - lCorrectRV - lWrongRV" variant="secondary"></b-progress-bar>
@@ -72,35 +67,27 @@ export default {
   },
   methods: {
     nextQuestion: function() {
-      this.$localForage.getItem("SETTINGS")
-      .then(filter => {
-        let categories = []
-        for(let entry of filter.categories) {
-          if(entry === 1) categories.push('Fischkunde');
-          else if(entry === 2) categories.push('Gewässerkunde');
-          else if(entry === 3) categories.push('Schutz und Pflege');
-          else if(entry === 4) categories.push('Fanggeräte');
-          else if(entry === 5) categories.push('Rechtsvorschriften');
-        }
-        //filter for not unanswered only at the moment
-        this.$localForage.keys()//die sind bereits beantwortet..
-        .then(answeredIds => {
-          let filteredIds = []
-          if(!filter.qsts.includes(3)) { //Beantwortet NICHT gewählt
-            filteredIds = answeredIds;
-          }
+      let categories = this.$store.getters.categoryNames
+      //filter for not unanswered only at the moment
+      let allowedIds = this.$store.getters.filteredQuestionIds;
+      if(allowedIds.length <= 0){
+        alert("Keine weiteren Fragen verfügbar, bitte Einstellungen prüfen!")
+        return
+      }
+      let filter = {
+        category: {
+          $in: categories
+        },
+        id: { $in: allowedIds }
+      }
 
-          this.$content('catalog')
-            .where({category: {$in: categories},  id: {$nin: filteredIds}})
-            .only(['id']).fetch()
-            .then(res => {
-              const next = res[Math.floor(Math.random()*res.length)].id
-              this.$router.push("/catalog/"+next)
-            })
-
+      this.$content('catalog')
+        .where(filter)
+        .only(['id']).fetch()
+        .then(res => {
+          const next = res[Math.floor(Math.random()*res.length)].id
+          this.$router.push("/catalog/"+next)
         })
-
-      })
     }
   },
   async fetch() {
@@ -142,3 +129,4 @@ export default {
   }
 }
 </script>
+

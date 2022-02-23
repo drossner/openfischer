@@ -64,6 +64,16 @@ export default {
     fallback: '404.html'
   },
 
+  localforage: {
+    instances: [{
+      name: 'nuxtJS',
+      storeName: 'nuxtLocalForage'
+    }, {
+      name: 'meta',
+      storeName: 'meta'
+    }]
+  },
+
   router: {
     base: '/openfischer/'
   },

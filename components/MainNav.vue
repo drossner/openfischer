@@ -1,12 +1,18 @@
 <template>
   <b-container>
-    <b-navbar type="light" variant="light" class="mb-3">
-      <b-navbar-nav>
-        <b-nav-item :to="{ path: '/' }">Home</b-nav-item>
-        <b-nav-item :to="{ path: '/overview' }">Fragenübersicht</b-nav-item>
-      </b-navbar-nav>
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item href="#" right><font-awesome-icon @click="openSettings" role="button" :icon="['fa', 'gear']" /></b-nav-item>
+    <b-navbar toggleable="sm" type="light" class="mb-3">
+      <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
+      <b-navbar-brand :to="{ path: '/' }">OpenFischer</b-navbar-brand>
+      <b-collapse id="nav-text-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item :active="$nuxt.$route.path === '/'" :to="{ path: '/' }">Home</b-nav-item>
+          <b-nav-item :active="$nuxt.$route.path === '/overview'" :to="{ path: '/overview' }">Fragenübersicht</b-nav-item>
+          <b-nav-item :active="$nuxt.$route.path === '/exams'" :to="{ path: '/exams' }">Prüfungen</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+
+      <b-navbar-nav >
+        <div @click="openSettings"><b-nav-item href="#" right><font-awesome-icon  role="button" :icon="['fa', 'gear']" /></b-nav-item></div>
       </b-navbar-nav>
     </b-navbar>
     <slot></slot>
@@ -31,14 +37,9 @@ export default {
     }
   },
   async fetch() {
-    let filter = await this.$localForage.getItem("SETTINGS")
-    if(filter === undefined || filter === null) {
-      //defaults
-      filter = {}
-      filter.categories = [1, 2, 3, 4, 5, 6];
-      filter.qsts = [3];
-      this.$localForage.setItem("SETTINGS", filter)
-    }
+    this.$store.dispatch('init').then(() => {
+
+    })
   }
 }
 </script>

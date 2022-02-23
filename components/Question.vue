@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col>
-        <h3>Frage {{ question.id }} <b-badge :variant="state.variant">{{ state.text }}</b-badge></h3>
+        <h3>Frage {{ question.id }} <small><b-badge pill :variant="answeredState.variant">{{ answeredState.text }}</b-badge></small></h3>
         <small> {{question.category}} </small>
         <p>{{question.question}}</p>
       </b-col>
@@ -39,13 +39,13 @@
         </b-form-group>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row align-h="between">
       <b-col>
         <b-button variant='primary' @click="check" :disabled="selected < 0">Prüfen</b-button>
         <b-button variant='secondary' @click="nextQuestion">Zufällige nächste Frage</b-button>
       </b-col>
       <b-col cols="1">
-        <font-awesome-icon role="button" @click="share" :icon="['fa', 'share']" />
+        <font-awesome-icon class="float-right" role="button" @click="share" :icon="['fa', 'share']" />
       </b-col>
     </b-row>
   </div>
@@ -62,20 +62,6 @@ export default {
       state: {}
     }
   },
-  async fetch() {
-    const state = await this.$localForage.getItem(this.question.id) || {correct: null}
-    if(state.correct === true) {
-      state.variant = "success"
-      state.text = "Richtig"
-    } else if(state.correct === false) {
-      state.variant = "danger"
-      state.text = "Falsch"
-    } else {
-      state.text = "Noch nicht beantwortet"
-      state.variant = "secondary"
-    }
-    this.state = state
-  },
   computed: {
     options: function() {
       return this.question.answers.map((a, index) =>  {
@@ -83,15 +69,31 @@ export default {
           text: a, value: index, correct: index === this.question.correctAnswer
         }
       })
+    },
+    answeredState: function () {
+      const tmp = this.$store.state.questionLocal[this.question.id] || {correct: null}
+      let state = { correct: tmp.correct }
+      if(state.correct === true) {
+        state.variant = "success"
+        state.text = "Richtig"
+      } else if(state.correct === false) {
+        state.variant = "danger"
+        state.text = "Falsch"
+      } else {
+        state.text = "Noch nicht beantwortet"
+        state.variant = "secondary"
+      }
+      return state
     }
   },
   methods: {
-    check: async function() {
+    check: function() {
       this.checked = true
       let correct = this.selected === this.question.correctAnswer;
-      let save = await this.$localForage.getItem(this.question.id) || {};
-      save.correct = correct;
-      await this.$localForage.setItem(this.question.id, save);
+      this.$store.commit('answerQuestion', {
+        id: this.question.id,
+        correct: correct
+      })
     },
     share: function () {
       if (navigator.share) {
@@ -105,36 +107,26 @@ export default {
       }
     },
     nextQuestion: function() {
+      let categories = this.$store.getters.categoryNames
+      //filter for not unanswered only at the moment
+      let allowedIds = this.$store.getters.filteredQuestionIds;
+      if(allowedIds.length <= 0){
+        alert("Keine weiteren Fragen verfügbar, bitte Einstellungen prüfen!")
+        return
+      }
+      let filter = {
+        category: {
+          $in: categories
+        },
+        id: { $in: allowedIds , $ne: this.question.id }
+      }
 
-
-      this.$localForage.getItem("SETTINGS")
-        .then(filter => {
-          let categories = []
-          for(let entry of filter.categories) {
-            if(entry === 1) categories.push('Fischkunde');
-            else if(entry === 2) categories.push('Gewässerkunde');
-            else if(entry === 3) categories.push('Schutz und Pflege');
-            else if(entry === 4) categories.push('Fanggeräte');
-            else if(entry === 5) categories.push('Rechtsvorschriften');
-          }
-          //filter for not unanswered only at the moment
-          this.$localForage.keys()//die sind bereits beantwortet..
-            .then(answeredIds => {
-              let filteredIds = []
-              if(!filter.qsts.includes(3)) { //Beantwortet NICHT gewählt
-                filteredIds = answeredIds;
-              }
-
-              this.$content('catalog')
-                .where({category: {$in: categories},  id: {$nin: filteredIds, $ne: this.question.id} })
-                .only(['id']).fetch()
-                .then(res => {
-                  const next = res[Math.floor(Math.random()*res.length)].id
-                  this.$router.push("/catalog/"+next)
-                })
-
-            })
-
+      this.$content('catalog')
+        .where(filter)
+        .only(['id']).fetch()
+        .then(res => {
+          const next = res[Math.floor(Math.random()*res.length)].id
+          this.$router.push("/catalog/"+next)
         })
     }
   }

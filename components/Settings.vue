@@ -35,33 +35,23 @@ export default {
       ],
       selectedCatorgies: [],
       optionsQst: [
-        { text: 'Bereits richtig (noch nicht verfügbar)', value: 1, notEnabled: true },
-        { text: 'Falsch (noch nicht verfügbar)', value: 2, notEnabled: true },
-        { text: 'Beantwortet', value: 3 },
+        { text: 'Richtige', value: 1 },
+        { text: 'Falsche', value: 2 },
+        { text: 'Unbeantwortete', value: 3 },
       ],
       selectedQsts: [],
     }
   },
-  async fetch () {
-    let filter = await this.$localForage.getItem("SETTINGS")
-    if(filter === undefined || filter === null) {
-      //defaults
-      filter = {}
-      filter.categories = [1, 2, 3, 4, 5, 6];
-      filter.qsts = [3];
-      this.$localForage.setItem("SETTINGS", filter)
-    }
-    this.selectedCatorgies = filter.categories;
-    this.selectedQsts = filter.qsts;
+  async fetch() {
+    this.selectedCatorgies = this.$store.state.settings.categories;
+    this.selectedQsts = this.$store.state.settings.qsts;
   },
   methods: {
     saveSettings: function () {
-      this.$localForage.getItem("SETTINGS")
-      .then(filter => {
-        filter.categories = this.selectedCatorgies;
-        filter.qsts = this.selectedQsts;
-        return filter;
-      }).then(filter => this.$localForage.setItem("SETTINGS", filter));
+      this.$store.commit('updateSettings', {
+        categories: this.selectedCatorgies,
+        qsts: this.selectedQsts
+      })
     }
   }
 }
