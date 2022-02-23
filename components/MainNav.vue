@@ -3,7 +3,7 @@
     <b-navbar toggleable="sm" type="light" class="mb-3">
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
       <b-navbar-brand :to="{ path: '/' }">
-        <nuxt-img width="50"  :src="'icon.png'"></nuxt-img>
+        <b-img width="50"  :src="'icon.png'"></b-img>
         OpenFischer
       </b-navbar-brand>
       <b-collapse id="nav-text-collapse" is-nav>
