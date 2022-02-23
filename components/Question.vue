@@ -45,7 +45,7 @@
         <b-button variant='secondary' @click="nextQuestion">Zufällige nächste Frage</b-button>
       </b-col>
       <b-col cols="1">
-        <font-awesome-icon class="float-right" role="button" @click="share" :icon="['fa', 'share']" />
+        <font-awesome-icon class="float-right" role="button" @click="share" :icon="['fa', 'share-nodes']" />
       </b-col>
     </b-row>
   </div>
