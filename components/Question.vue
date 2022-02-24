@@ -2,8 +2,9 @@
   <div>
     <b-row>
       <b-col>
-        <h3>Frage {{ question.id }} <small><b-badge pill :variant="answeredState.variant">{{ answeredState.text }}</b-badge></small></h3>
-        <small> {{question.category}} </small>
+        <h4 class="d-inline-flex">Frage {{ question.id }} <small><b-badge class="ml-2" pill :variant="answeredState.variant">{{ answeredState.text }}</b-badge></small></h4>
+        <span class="ml-2 mt-1 float-right"><font-awesome-icon class="align-middle" role="button" @click="share" :icon="['fa', 'share-nodes']" /></span>
+        <small class="d-block"> {{question.category}} </small>
         <p>{{question.question}}</p>
       </b-col>
     </b-row>
@@ -29,23 +30,16 @@
           >
             <b-form-radio
               v-for="option in options"
-              :key="option.text"
+              :key="option.valueAsNumber"
               :value="option.value"
               :class="{checked: checked, correct: option.correct, wrong: !option.correct}"
+              @change="check"
+              :disabled="checked && option.value !== selected"
             >
               {{ option.text }}
             </b-form-radio>
           </b-form-radio-group>
         </b-form-group>
-      </b-col>
-    </b-row>
-    <b-row align-h="between">
-      <b-col>
-        <b-button variant='primary' @click="check" :disabled="selected < 0">Prüfen</b-button>
-        <b-button variant='secondary' @click="nextQuestion">Zufällige nächste Frage</b-button>
-      </b-col>
-      <b-col cols="1">
-        <font-awesome-icon class="float-right" role="button" @click="share" :icon="['fa', 'share-nodes']" />
       </b-col>
     </b-row>
   </div>
@@ -59,7 +53,7 @@ export default {
     return {
       selected: -1,
       checked: false,
-      state: {}
+      //state: {}
     }
   },
   computed: {
@@ -80,7 +74,7 @@ export default {
         state.variant = "danger"
         state.text = "Falsch"
       } else {
-        state.text = "Noch nicht beantwortet"
+        state.text = "Offen"
         state.variant = "secondary"
       }
       return state
@@ -94,6 +88,7 @@ export default {
         id: this.question.id,
         correct: correct
       })
+      this.$emit("checked", correct)
     },
     share: function () {
       if (navigator.share) {
@@ -106,28 +101,11 @@ export default {
           .catch((error) => console.log('Error sharing', error));
       }
     },
-    nextQuestion: function() {
-      let categories = this.$store.getters.categoryNames
-      //filter for not unanswered only at the moment
-      let allowedIds = this.$store.getters.filteredQuestionIds;
-      if(allowedIds.length <= 0){
-        alert("Keine weiteren Fragen verfügbar, bitte Einstellungen prüfen!")
-        return
-      }
-      let filter = {
-        category: {
-          $in: categories
-        },
-        id: { $in: allowedIds , $ne: this.question.id }
-      }
-
-      this.$content('catalog')
-        .where(filter)
-        .only(['id']).fetch()
-        .then(res => {
-          const next = res[Math.floor(Math.random()*res.length)].id
-          this.$router.push("/catalog/"+next)
-        })
+  },
+  watch: {
+    question: function () {
+      this.checked = false
+      this.selected = -1
     }
   }
 }

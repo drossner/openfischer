@@ -35,16 +35,15 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col>
-        <b-button variant="primary" block @click="nextQuestion">Starte mit zufälliger Frage</b-button>
-        <small><a role="button" v-b-toggle="'collapse-hint'">Tipp</a></small>
-        <b-collapse id="collapse-hint">
-          <p>In den Einstellungen oben rechts, lassen sich verschiedene Filter (de-)aktivieren. Somit können gezielt
-          Themengebiete, offene oder bereits beantwortete Fragen geübt werden. Die Filter-Einstellungen bleiben
-          auch nach einem Neustart erhalten.</p>
-        </b-collapse>
+      <b-col class="d-inline-flex w-100 justify-content-between">
+        <b-button class="w-100" variant="primary" @click="nextQuestion">Starte mit zufälliger Frage</b-button>
+        <span class="ml-3 mt-1" @click="openSettings"><font-awesome-icon  class="align-middle" role="button" :icon="['fa', 'gear']" /></span>
       </b-col>
     </b-row>
+    <b-modal centered ref="settings-modal" title="Einstellungen" hide-footer>
+      <Settings ref="settings"></Settings>
+      <b-button class="mt-3" variant="outline-primary" block @click="hideModal">Speichern</b-button>
+    </b-modal>
   </MainNav>
 </template>
 
@@ -94,6 +93,13 @@ export default {
           const next = res[Math.floor(Math.random()*res.length)].id
           this.$router.push("/catalog/"+next)
         })
+    },
+    openSettings: function () {
+      this.$refs['settings-modal'].show();
+    },
+    hideModal: function () {
+      this.$refs.settings.saveSettings();
+      this.$refs['settings-modal'].hide();
     }
   },
   async fetch() {

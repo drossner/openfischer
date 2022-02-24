@@ -3,7 +3,7 @@ export const state = () => ({
   settings: {}, //initialized with init action
   questionLocal: {}, // as settings, a id -> local data map
   allQuestionIds: [], //to have them at hand, fast..
-  exams: []
+  exams: [],
 })
 
 export const mutations = {
@@ -47,7 +47,22 @@ export const mutations = {
     const index = state.exams.map(elem => elem.id).indexOf(id)
     state.exams.splice(index, 1)
     this.$localForage.meta.setItem("EXAMS", this.state.exams)
-  }
+  },
+  examNextQuestion(state, data) {
+    let exam = state.exams.find(exam => exam.id === data.id)
+    let qst = data.qst
+    if(data.correct === false) qst = data.qst //nothing
+    else if(qst < 12) exam.correctFK++
+    else if(qst < 24) exam.correctGK++
+    else if(qst < 36) exam.correctSP++
+    else if(qst < 48) exam.correctFG++
+    else if(qst < 60) exam.correctRV++
+    if(exam.currQst >= 59) {
+      exam.ended = new Date()
+    } else exam.currQst++
+
+    this.$localForage.meta.setItem("EXAMS", state.exams)
+  },
 }
 
 export const getters = {
@@ -87,6 +102,13 @@ export const getters = {
       }
     }
     return res;
+  },
+  nextExamId(state) {
+    if(state.exams.length === 0) return 1
+    else return state.exams[state.exams.length - 1].id + 1
+  },
+  getExamById: (state) => (id) => {
+    return state.exams.find(exam => exam.id === id)
   }
 }
 
