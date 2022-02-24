@@ -30,8 +30,12 @@ export default {
   methods: {
     addExam: async function () {
       //create exam
-      let randX = function(arr, x) {
-        return arr.sort(() => .5 - Math.random()).slice(0,x)
+      let randX = function(array, x) {
+        for (let i = array.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array.slice(0,x)
       }
       let FKids = randX(await this.$content('catalog').only(['id']).where({category: {$eq: "Fischkunde"}}).fetch(), 12)
       let GKids = randX(await this.$content('catalog').only(['id']).where({category: {$eq: "Gewässerkunde"}}).fetch(), 12)
