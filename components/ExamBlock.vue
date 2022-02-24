@@ -19,7 +19,7 @@
 
         <b-collapse :id="'collapse-'+exam.id">
           Fischkunde <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctFK"></b-progress>
-          Gewässerkunde <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctGW"></b-progress>
+          Gewässerkunde <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctGK"></b-progress>
           Schutz und Pflege <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctSP"></b-progress>
           Fanggeräte <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctFG"></b-progress>
           Rechtsvorschriften <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctRV"></b-progress>
