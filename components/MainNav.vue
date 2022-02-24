@@ -1,5 +1,11 @@
 <template>
   <b-container>
+    <b-overlay
+      rounded
+      opacity="0.7"
+      spinner-variant="primary"
+      :show="!vuexReady"
+    >
     <b-navbar toggleable="sm" type="light" class="mb-3">
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
       <b-navbar-brand :to="{ path: '/' }">
@@ -15,8 +21,19 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <slot></slot>
+
+      <slot></slot>
+
+      <template #overlay>
+        <div class="text-center">
+          <b-icon icon="stopwatch" font-scale="3" animation="cylon"></b-icon>
+          <p>Lokale Daten werden in den Speicher geladen...</p>
+          <b-spinner></b-spinner>
+        </div>
+      </template>
+    </b-overlay>
   </b-container>
+
 </template>
 
 <script>
@@ -29,6 +46,11 @@ export default {
     this.$store.dispatch('init').then(() => {
 
     })
+  },
+  computed: {
+    vuexReady: function () {
+      return this.$store.state.initialized
+    }
   }
 }
 </script>

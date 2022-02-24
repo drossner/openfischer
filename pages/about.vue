@@ -8,7 +8,7 @@
         angehende Anwärterinnen und Anwärter für den <em>bayerischen</em> Fischereischein zu unterstützen.
           Umgesetzt als <a href="https://de.wikipedia.org/wiki/Progressive_Web_App">PWA</a> (<b>P</b>rogressive <b>W</b>eb <b>A</b>pp),
         werden sämtliche Daten lokal auf Ihrem Gerät gespeichert. Aus diesem Grund ist kein Nutzer-Account nötig und die Offline-Verwendung
-          der App möglich. <small>Letzteres, noch mit kleinen Fehlern behaftet.</small></p>
+          der App möglich.</p>
 
         <div class="accordion" role="tablist">
           <b-card no-body class="mb-1">
