@@ -17,6 +17,7 @@
           <b-nav-item :active="$nuxt.$route.path === '/'" :to="{ path: '/' }">Home</b-nav-item>
           <b-nav-item :active="$nuxt.$route.path === '/overview'" :to="{ path: '/overview' }">Fragenübersicht</b-nav-item>
           <b-nav-item :active="$nuxt.$route.path === '/exams'" :to="{ path: '/exams' }">Prüfungen</b-nav-item>
+          <b-nav-item :active="$nuxt.$route.path === '/sync'" :to="{ path: '/sync' }">Daten Synchronisieren</b-nav-item>
           <b-nav-item :active="$nuxt.$route.path === '/about'" :to="{ path: '/about' }">Info</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -26,7 +27,6 @@
 
       <template #overlay>
         <div class="text-center">
-          <b-icon icon="stopwatch" font-scale="3" animation="cylon"></b-icon>
           <p>Lokale Daten werden in den Speicher geladen...</p>
           <b-spinner></b-spinner>
         </div>

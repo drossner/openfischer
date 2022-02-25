@@ -38,7 +38,7 @@ export default {
     '@nuxt/image',
     ['@nuxtjs/fontawesome', {
       icons: {
-        solid: ['faShare', 'faGear', 'faShareNodes', 'faTrashCan']
+        solid: ['faShare', 'faGear', 'faShareNodes', 'faTrashCan', 'faDownload']
       },
     }]
   ],
