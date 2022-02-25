@@ -6,16 +6,14 @@
         <span class="ml-2"><small>{{ exam.started.toLocaleString() }}</small></span>
         <span class="float-right ml-3" @click="removeExam"><font-awesome-icon  role="button" :icon="['fa', 'trash-can']" /></span>
       </template>
-      <b-card-text> <span class="text-muted align-middle">Status: <b>{{ msg }}</b></span>
-        <b-button
-        v-if="exam.ended =! null" class="d-inline-block float-right"
+      <b-card-text> <span class="mr-4 text-muted align-middle">Status: <b>{{ msg }}</b></span>
+        <b-button class="d-inline-block float-right"
+        v-if="exam.ended === null"
         @click="$router.push(`/exams/${exam.id}`)"
-        >
-          Starten
-        </b-button>
+        >Starten</b-button>
         <b-button  class="d-inline-block float-right" v-else  v-b-toggle="'collapse-'+exam.id" variant="outline-info" @click.prevent>Details</b-button>
       </b-card-text>
-      <b-card-text v-if="exam.ended != null">
+      <b-card-text v-if="exam.ended !== null">
 
         <b-collapse :id="'collapse-'+exam.id">
           Fischkunde <b-progress class="mb-2" show-value max="12" :variant="exam.correctFK >= 6? 'success' : 'danger'" :value="exam.correctFK"></b-progress>
