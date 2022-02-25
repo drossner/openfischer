@@ -126,15 +126,8 @@ export const actions = {
       }
       commit('initSettings', settings)
 
-      //init local question data
-      let data = await this.$localForage.nuxtLocalForage.keys()
       let allKeys = await this.$content('catalog').only(['id']).fetch()
-      let tmp = {};
-      for(let key of data) {
-        tmp[key] = await this.$localForage.nuxtLocalForage.getItem(key)
-      }
       commit('initQuestionIds', allKeys)
-      commit('initQuestionLocal', tmp)
 
       //init exams
       let exams = await this.$localForage.meta.getItem("EXAMS")
@@ -144,7 +137,16 @@ export const actions = {
       }
       commit('initExams', exams)
 
+      //init local question data
+      //should not be crucial to application startup, only if we need answered questions only
       commit('initDone')
+      let tmp = {};
+      this.$localForage.nuxtLocalForage.iterate((value, key) => {
+       tmp[key] = value;
+     }).then(() => {
+       commit('initQuestionLocal', tmp)
+
+      })
     }
   }
 }

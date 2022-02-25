@@ -116,7 +116,7 @@ export default {
 
     //const localAnswered = await this.$localForage.keys();
 
-    await this.$localForage.iterate((value, key, i) => {
+    this.$localForage.iterate((value, key, i) => {
       if(key.startsWith("1") || key.startsWith("B1")) {
         if(value.correct) this.lCorrectFK++;
         else this.lWrongFK++

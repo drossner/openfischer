@@ -13,9 +13,9 @@
         >
           Starten
         </b-button>
-        <b-button  class="d-inline-block float-right" v-else  v-b-toggle="'collapse-'+exam.id" variant="outline-info">Details</b-button>
+        <b-button  class="d-inline-block float-right" v-else  v-b-toggle="'collapse-'+exam.id" variant="outline-info" @click.prevent>Details</b-button>
       </b-card-text>
-      <b-card-text v-if="exam.ended > 0">
+      <b-card-text v-if="exam.ended != null">
 
         <b-collapse :id="'collapse-'+exam.id">
           Fischkunde <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctFK"></b-progress>

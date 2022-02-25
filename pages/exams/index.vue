@@ -45,7 +45,7 @@ export default {
       this.$store.commit('addExam', {
         id: this.$store.getters.nextExamId,
         started: new Date(),
-        ended: -1,
+        ended: null,
         fkIds: FKids,
         gkIds: GKids,
         spIds: SPids,
