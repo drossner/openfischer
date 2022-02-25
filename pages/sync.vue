@@ -2,24 +2,31 @@
   <MainNav>
     <b-row>
       <b-col>
-        <h4>Achung Experimentel!</h4>
-        <p>Diese Seite erlaubt es, die lokalen Daten mit GoogleDrive abzugleichen. Dazu ist ein Google-Login notwendig.</p>
+        <h4>Daten-Synchronisation!</h4>
+        <p>Diese Seite erlaubt es, die lokalen Daten mit GoogleDrive abzugleichen. Dazu ist ein Google-Login notwendig.
+        Melde Dich mit deinem Google-Account und bestätige den Zugriff. Da diese Anwendung nur lokal in deinem Browser
+        ausgeführt wird, und nur die Berechtigung für Anwendungsdaten abgefragt wird, können keine anderen Daten von GoogleDrive
+        abgefragt werden.</p>
+        <p>Nach der Anmeldung ist es möglich, sich eine Liste der auf Drive verfügbaren Speicherstände anzuzeigen. Diese
+        können gelöscht, oder zum herunterladen ausgewählt werden</p>
+        <p><b>Achtung: Das Herunterladen eines Speicherstandes löscht ALLE lokalen Daten und übernimmt die heruntergeladenenen!</b></p>
+        <p>Ebenso kann der aktuelle lokale Datenbestand hochgeladen - und somit gesichert werden</p>
         <p>Solange dieses Feature experimentell ist, kann es, auch lokal, zu Datenverlusten kommen.</p>
         <p v-if="authenticated"><b>Eingeloggt</b></p>
-        <b-button v-else @click="login">Login with Google</b-button>
+        <b-button v-else @click="login" variant="primary">Login with Google</b-button>
       </b-col>
     </b-row>
     <template v-if="authenticated">
       <b-row class="mb-2">
         <b-col>
-          <b-button :disabled="loadingData" @click="getData"><b-spinner v-if="loadingData" small></b-spinner>
+          <b-button class="mb-2" :disabled="loadingData" @click="getData"><b-spinner v-if="loadingData" small></b-spinner>
             Liste verfügbare Daten von Drive </b-button>
           <b-button :disabled="uploadingData" @click="upload"><b-spinner v-if="uploadingData" small></b-spinner> Lokalen Stand hochladen</b-button>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          <b-card v-for="appData in appDataFiles" :key="appData.id">
+          <b-card class="mb-3" v-for="appData in appDataFiles" :key="appData.id">
             <template #header >
               <h6 class="mb-0 d-inline-flex">{{ appData.name }}</h6>
               <span class="float-right ml-3" @click="removeSave(appData.id)"><font-awesome-icon  role="button" :icon="['fa', 'trash-can']" /></span>
