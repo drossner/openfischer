@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     msg: function () {
-      if(this.exam.ended < 0) return "Nicht beendet"
+      if(this.exam.ended != null) return "Nicht beendet"
       else if(this.correctAnswers >= 45 && this.exam.correctFK >= 6 && this.exam.correctFG >= 6 && this.exam.correctRV >= 6 && this.exam.correctSP >= 6) {
         return "Bestanden"
       } else return "Nicht bestanden"
