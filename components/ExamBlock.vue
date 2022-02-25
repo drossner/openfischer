@@ -8,7 +8,7 @@
       </template>
       <b-card-text> <span class="text-muted align-middle">Status: <b>{{ msg }}</b></span>
         <b-button
-        v-if="exam.ended < 0" class="d-inline-block float-right"
+        v-if="exam.ended =! null" class="d-inline-block float-right"
         @click="$router.push(`/exams/${exam.id}`)"
         >
           Starten
