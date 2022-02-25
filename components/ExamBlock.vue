@@ -6,7 +6,7 @@
         <span class="ml-2"><small>{{ exam.started.toLocaleString() }}</small></span>
         <span class="float-right ml-3" @click="removeExam"><font-awesome-icon  role="button" :icon="['fa', 'trash-can']" /></span>
       </template>
-      <b-card-text> <span class="text-muted align-middle">Status: {{ msg }}</span>
+      <b-card-text> <span class="text-muted align-middle">Status: <b>{{ msg }}</b></span>
         <b-button
         v-if="exam.ended < 0" class="d-inline-block float-right"
         @click="$router.push(`/exams/${exam.id}`)"
@@ -18,11 +18,11 @@
       <b-card-text v-if="exam.ended != null">
 
         <b-collapse :id="'collapse-'+exam.id">
-          Fischkunde <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctFK"></b-progress>
-          Gewässerkunde <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctGK"></b-progress>
-          Schutz und Pflege <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctSP"></b-progress>
-          Fanggeräte <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctFG"></b-progress>
-          Rechtsvorschriften <b-progress class="mb-2" show-value max="12" variant="success" :value="exam.correctRV"></b-progress>
+          Fischkunde <b-progress class="mb-2" show-value max="12" :variant="exam.correctFK >= 6? 'success' : 'danger'" :value="exam.correctFK"></b-progress>
+          Gewässerkunde <b-progress class="mb-2" show-value max="12" :variant="exam.correctGK >= 6? 'success' : 'danger'" :value="exam.correctGK"></b-progress>
+          Schutz und Pflege <b-progress class="mb-2" show-value max="12" :variant="exam.correctSP >= 6? 'success' : 'danger'" :value="exam.correctSP"></b-progress>
+          Fanggeräte <b-progress class="mb-2" show-value max="12" :variant="exam.correctFG >= 6? 'success' : 'danger'" :value="exam.correctFG"></b-progress>
+          Rechtsvorschriften <b-progress class="mb-2" show-value max="12" :variant="exam.correctRV >= 6? 'success' : 'danger'":value="exam.correctRV"></b-progress>
         </b-collapse>
       </b-card-text>
     <template #footer>
@@ -47,7 +47,7 @@ export default {
   computed: {
     msg: function () {
       if(this.exam.ended < 0) return "Nicht beendet"
-      else if(this.correctAnswers >= 45) {
+      else if(this.correctAnswers >= 45 && this.exam.correctFK >= 6 && this.exam.correctFG >= 6 && this.exam.correctRV >= 6 && this.exam.correctSP >= 6) {
         return "Bestanden"
       } else return "Nicht bestanden"
     },
