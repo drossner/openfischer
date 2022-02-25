@@ -21,6 +21,9 @@
         <b-col>
           <b-button class="mb-2" :disabled="loadingData" @click="getData"><b-spinner v-if="loadingData" small></b-spinner>
             Liste verfügbare Daten von Drive </b-button>
+
+        </b-col>
+        <b-col>
           <b-button :disabled="uploadingData" @click="upload"><b-spinner v-if="uploadingData" small></b-spinner> Lokalen Stand hochladen</b-button>
         </b-col>
       </b-row>
@@ -111,7 +114,7 @@ export default {
           for(let key of Object.keys(data.localQuestions)) {
             this.$localForage.nuxtLocalForage.setItem(key, data.localQuestions[key])
           }
-          this.$store.dispatch('init').then(() => {
+          this.$store.dispatch('init', true).then(() => {
             this.$router.push("/")
           })
         })

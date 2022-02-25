@@ -6,7 +6,7 @@
       spinner-variant="primary"
       :show="!vuexReady"
     >
-    <b-navbar toggleable="sm" type="light" class="mb-3">
+    <b-navbar toggleable="md" type="light" class="mb-3">
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
       <b-navbar-brand :to="{ path: '/' }">
         <b-img width="50"  :src="'icon.png'"></b-img>

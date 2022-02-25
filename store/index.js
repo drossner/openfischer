@@ -113,8 +113,8 @@ export const getters = {
 }
 
 export const actions = {
-  async init({ commit, state }) {
-    if(state.initialized === false) {
+  async init({ commit, state }, force) {
+    if(state.initialized === false || force) {
       //init settings
       let settings = await this.$localForage.meta.getItem("SETTINGS")
       if(settings === undefined || settings === null) {
