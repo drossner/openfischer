@@ -6,7 +6,10 @@
         <span class="ml-2"><small>{{ exam.started.toLocaleString() }}</small></span>
         <span class="float-right ml-3" @click="removeExam"><font-awesome-icon  role="button" :icon="['fa', 'trash-can']" /></span>
       </template>
-      <b-card-text> <span class="mr-4 text-muted align-middle">Status: <b>{{ msg }}</b></span>
+      <b-card-text>
+        <span class="mr-2 text-muted align-middle">Status: <b>{{ msg }}</b></span>
+        <span v-if="successful === 2" class="mr-4"><font-awesome-icon  :icon="['fa', 'check']" /></span>
+        <span v-if="successful === 1" class="mr-4"><font-awesome-icon  :icon="['fa', 'x']" /></span>
         <b-button class="d-inline-block float-right"
         v-if="exam.ended === null"
         @click="$router.push(`/exams/${exam.id}`)"
@@ -43,9 +46,15 @@ export default {
     }
   },
   computed: {
-    msg: function () {
-      if(this.exam.ended === null) return "Nicht beendet"
+    successful: function() {
+      if(this.exam.ended === null) return 0
       else if(this.correctAnswers >= 45 && this.exam.correctFK >= 6 && this.exam.correctFG >= 6 && this.exam.correctRV >= 6 && this.exam.correctSP >= 6) {
+        return 2
+      } else return 1
+    },
+    msg: function () {
+      if(this.successful === 0) return "Nicht beendet"
+      else if(this.successful === 2) {
         return "Bestanden"
       } else return "Nicht bestanden"
     },
@@ -55,6 +64,7 @@ export default {
     progressVariant: function () {
       if(this.correctAnswers < 30) return "danger"
       else if(this.correctAnswers < 45) return "warning"
+        else if( this.exam.correctFK < 6 && this.exam.correctFG < 6 && this.exam.correctRV < 6 && this.exam.correctSP < 6) return "warning"
       else return "success"
     }
   },
