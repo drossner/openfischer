@@ -4,6 +4,8 @@
       <b-col>
         <h4>Datensicherung</h4>
         <p>Diese Seite erlaubt es, die lokalen Daten mit GoogleDrive abzugleichen. Dazu ist ein Google-Login notwendig.
+          Mit Hilfe der Sicherung, kann der Fortschritt auf verschiedenen Geräte, z.B. dem Smartphone und dem PC,
+          und verschiedenen Browsern synchronisiert werden.
         Melde Dich mit deinem Google-Account und bestätige den Zugriff. Da diese Anwendung nur lokal in deinem Browser
         ausgeführt wird, und nur die Berechtigung für Anwendungsdaten abgefragt wird, können keine anderen Daten von GoogleDrive
         abgefragt werden.</p>
