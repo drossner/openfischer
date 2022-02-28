@@ -21,6 +21,11 @@
                 </b-list-group>
       </b-col>
     </b-row>
+    <b-row class="mb-2">
+      <b-col>
+        <b-pagination v-model="currentPage"  per-page="pageLimit" :total-rows="allData.length" use-router></b-pagination>
+      </b-col>
+    </b-row>
   </MainNav>
 </template>
 
@@ -30,7 +35,7 @@ export default {
   data: function () {
     return {
       allData: [],
-      pageLimit: 12,
+      pageLimit: 20,
       enteredText: "",
       currentPage: 1
     }
