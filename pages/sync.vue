@@ -2,7 +2,7 @@
   <MainNav>
     <b-row>
       <b-col>
-        <h4>Daten-Synchronisation!</h4>
+        <h4>Datensicherung</h4>
         <p>Diese Seite erlaubt es, die lokalen Daten mit GoogleDrive abzugleichen. Dazu ist ein Google-Login notwendig.
         Melde Dich mit deinem Google-Account und bestätige den Zugriff. Da diese Anwendung nur lokal in deinem Browser
         ausgeführt wird, und nur die Berechtigung für Anwendungsdaten abgefragt wird, können keine anderen Daten von GoogleDrive
@@ -11,7 +11,6 @@
         können gelöscht, oder zum herunterladen ausgewählt werden</p>
         <p><b>Achtung: Das Herunterladen eines Speicherstandes löscht ALLE lokalen Daten und übernimmt die heruntergeladenenen!</b></p>
         <p>Ebenso kann der aktuelle lokale Datenbestand hochgeladen - und somit gesichert werden</p>
-        <p>Solange dieses Feature experimentell ist, kann es, auch lokal, zu Datenverlusten kommen.</p>
         <p v-if="authenticated"><b>Eingeloggt</b></p>
         <b-button v-else @click="login" variant="primary">Login with Google</b-button>
       </b-col>
