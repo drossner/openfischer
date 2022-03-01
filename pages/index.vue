@@ -40,9 +40,10 @@
         <span class="ml-3 mt-1" @click="openSettings"><font-awesome-icon  class="align-middle" role="button" :icon="['fa', 'gear']" /></span>
       </b-col>
     </b-row>
-    <b-modal centered ref="settings-modal" title="Einstellungen" hide-footer>
+    <b-modal centered ref="settings-modal" title="Einstellungen" hide-footer
+             header-bg-variant="dark" body-bg-variant="dark" footer-bg-variant="dark">
       <Settings ref="settings"></Settings>
-      <b-button class="mt-3" variant="outline-primary" block @click="hideModal">Speichern</b-button>
+      <b-button class="mt-3" variant="secondary" block @click="hideModal">Speichern</b-button>
     </b-modal>
   </MainNav>
 </template>
