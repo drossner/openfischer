@@ -36,7 +36,7 @@
     </b-row>
     <b-row>
       <b-col class="d-inline-flex w-100 justify-content-between">
-        <b-button class="w-100" variant="primary" @click="nextQuestion">Starte mit zufälliger Frage</b-button>
+        <b-button class="w-100" variant="dark" @click="nextQuestion">Starte mit zufälliger Frage</b-button>
         <span class="ml-3 mt-1" @click="openSettings"><font-awesome-icon  class="align-middle" role="button" :icon="['fa', 'gear']" /></span>
       </b-col>
     </b-row>

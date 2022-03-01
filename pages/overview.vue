@@ -3,13 +3,13 @@
     <b-row class="mb-3">
       <b-col>
         <b-input-group>
-          <b-form-input placeholder="Fragen durchsuchen" v-model="enteredText" @input="startQuery"></b-form-input>
+          <b-form-input variant="dark" placeholder="Fragen durchsuchen" v-model="enteredText" @input="startQuery"></b-form-input>
         </b-input-group>
       </b-col>
     </b-row>
     <b-row class="mb-2">
       <b-col>
-        <b-pagination v-model="currentPage"  per-page="pageLimit" :total-rows="allData.length"></b-pagination>
+        <b-pagination v-model="currentPage"  per-page="pageLimit" :total-rows="allData.length" variant="dark"></b-pagination>
       </b-col>
     </b-row>
     <b-row class="mb-2">
@@ -60,7 +60,7 @@ export default {
       for(let qst of result) {
         let save = this.$store.state.questionLocal[qst.id]
         if(save === undefined || save === null){
-
+          qst.variant = "dark"
         } else {
           if(save.correct){
             qst.variant = "success"

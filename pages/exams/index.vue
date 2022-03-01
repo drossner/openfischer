@@ -6,7 +6,7 @@
        <p>Diese Seite erlaubt das Durchführen von Probeprüfungen. Diese setzen sich aus insgesamt 60 Fragen zusammen,
        12 je Themengebiet. Eine Prüfung gilt als bestanden,
        wenn mindestens 45 Fragen und in keinem Themengebiet weniger als 6 Fragen richtig beanwortet wurden.</p>
-       <b-button variant="primary" block @click="addExam">Neue Probeprüfung anlegen</b-button>
+       <b-button variant="dark" block @click="addExam">Neue Probeprüfung anlegen</b-button>
      </b-col>
    </b-row>
    <b-row class="mb-5">

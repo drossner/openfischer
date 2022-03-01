@@ -26,7 +26,8 @@
             stacked
             buttons
             class="btn-block"
-            button-variant="outline-dark"
+            button-variant="dark"
+            size="lg"
           >
             <b-form-radio
               v-for="option in options"

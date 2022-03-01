@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card>
+    <b-card bg-variant="dark">
       <template #header >
           <h6 class="mb-0 d-inline-flex">Prüfung: #{{ exam.id }}</h6>
         <span class="ml-2"><small>{{ exam.started.toLocaleString() }}</small></span>
