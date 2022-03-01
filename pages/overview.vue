@@ -9,7 +9,7 @@
     </b-row>
     <b-row class="mb-2">
       <b-col>
-        <b-pagination v-model="currentPage"  per-page="pageLimit" :total-rows="allData.length" use-router></b-pagination>
+        <b-pagination v-model="currentPage"  per-page="pageLimit" :total-rows="allData.length"></b-pagination>
       </b-col>
     </b-row>
     <b-row class="mb-2">
