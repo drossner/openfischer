@@ -124,10 +124,10 @@ export default {
       } else if(key.startsWith("2") || key.startsWith("B2")) {
         if(value.correct) this.lCorrectGK++;
         else this.lWrongGK++
-      } else if(key.startsWith("3") || key.startsWith("B3")) {
+      } else if(key.startsWith("3")) {
         if(value.correct) this.lCorrectSP++;
         else this.lWrongSP++
-      } else if(key.startsWith("4") || key.startsWith("B4")) {
+      } else if(key.startsWith("4") || key.startsWith("B4") || key.startsWith("B3")) {
         if(value.correct) this.lCorrectFG++;
         else this.lWrongFG++
       } else if(key.startsWith("5") || key.startsWith("B5")) {
