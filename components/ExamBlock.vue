@@ -62,9 +62,8 @@ export default {
       return this.exam.correctFK + this.exam.correctFG + this.exam.correctGK + this.exam.correctRV + this.exam.correctSP
     },
     progressVariant: function () {
-      if(this.correctAnswers < 30) return "danger"
-      else if(this.correctAnswers < 45) return "warning"
-        else if( this.exam.correctFK < 6 && this.exam.correctFG < 6 && this.exam.correctRV < 6 && this.exam.correctSP < 6) return "warning"
+      if(this.correctAnswers < 45) return "danger"
+      else if(this.exam.correctFK < 6 || this.exam.correctFG < 6 || this.exam.correctRV < 6 || this.exam.correctSP < 6) return "warning"
       else return "success"
     }
   },
