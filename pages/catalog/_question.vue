@@ -11,11 +11,11 @@
 
 <script>
 export default {
-  async asyncData ({ $content, app, params, error }) {
-    const path = `/${params.pathMatch || 'index'}`
-    const [question] = await $content({ deep: true }).where({ path }).fetch()
-
-    if (!question) {
+  async asyncData ({ $content, params, error }) {
+    const id = params.question
+    const [question] = await $content({ deep: true }).where({ id: {$eq: id} }).fetch()
+    console.log(question)
+    if (question === null || question === undefined) {
       return error({ statusCode: 404, message: 'question not found' })
     }
 

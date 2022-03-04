@@ -96,7 +96,10 @@ export default {
         navigator.share({
           title: 'Frage '+this.question.id+" ("+this.question.category+")",
           text: this.question.question,
-          url: window.location.href,
+          url: location.protocol + "//" + location.host + this.$router.resolve({
+            name: 'catalog-question',
+            params: { question: this.question.id }
+          }).href,
         })
           .then(() => console.log('Successful share'))
           .catch((error) => console.log('Error sharing', error));
