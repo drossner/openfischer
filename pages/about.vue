@@ -5,7 +5,7 @@
         <b-img center block class="header-img" :src="'icon.png'"></b-img>
         <h3 center >OpenFischer</h3>
         <p>OpenFischer ist der Versuch, ein freies, nicht-kommerzielles Tool zur Verfügung zu stellen, um
-        angehende Anwärterinnen und Anwärter bei der Vorbereitung für <em>bayerischen</em> Fischereischein zu unterstützen.
+        angehende Anwärterinnen und Anwärter bei der Vorbereitung für den <em>bayerischen</em> Fischereischein zu unterstützen.
           Umgesetzt als <a href="https://de.wikipedia.org/wiki/Progressive_Web_App">PWA</a> (<b>P</b>rogressive <b>W</b>eb <b>A</b>pp),
         werden sämtliche Daten lokal auf Ihrem Gerät gespeichert. Aus diesem Grund ist kein Nutzer-Account nötig und die Offline-Verwendung
           der App möglich.</p>
