@@ -120,7 +120,7 @@ export const actions = {
       if(settings === undefined || settings === null) {
         //defaults
         settings = {}
-        settings.categories = [1, 2, 3, 5, 6];
+        settings.categories = [1, 2, 3, 4, 5, 6];
         settings.qsts = [3];
         this.$localForage.meta.setItem("SETTINGS", settings)
       }
