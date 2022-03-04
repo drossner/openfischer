@@ -3,17 +3,16 @@
     <b-row>
       <b-col>
         <h4>Datensicherung</h4>
-        <p>Diese Seite erlaubt es, die lokalen Daten mit GoogleDrive abzugleichen. Dazu ist ein Google-Login notwendig.
-          Mit Hilfe der Sicherung, kann der Fortschritt auf verschiedenen Geräte, z.B. dem Smartphone und dem PC,
-          und verschiedenen Browsern synchronisiert werden.
-        Melde Dich mit deinem Google-Account und bestätige den Zugriff. Da diese Anwendung nur lokal in deinem Browser
-        ausgeführt wird, und nur die Berechtigung für Anwendungsdaten abgefragt wird, können keine anderen Daten von GoogleDrive
-        abgefragt werden.</p>
-        <p>Nach der Anmeldung ist es möglich, sich eine Liste der auf Drive verfügbaren Speicherstände anzuzeigen. Diese
-        können gelöscht, oder zum herunterladen ausgewählt werden</p>
+        <p>Diese Seite erlaubt es, den lokal gespeicherten Fortschritt mit GoogleDrive abzugleichen. Dazu ist ein Google-Login notwendig.
+          Mit Hilfe der Sicherung kann der Fortschritt auf verschiedenen Geräte, z.B. dem Smartphone und dem PC,
+          und über verschiedne Browser synchronisiert werden.
+        Melde Dich mit deinem Google-Account an und bestätige den Zugriff. Mit den angefragten Berechtigungen, können keine
+        andere Dateien von GoogleDrive gelesen oder verändert werden.</p>
+        <p>Nach der Anmeldung ist es möglich, eine Liste der auf Drive verfügbaren Speicherstände anzuzeigen. Die Speicherstände
+        können gelöscht, oder zum herunterladen ausgewählt werden.</p>
         <p><b>Achtung: Das Herunterladen eines Speicherstandes löscht ALLE lokalen Daten und übernimmt die heruntergeladenenen!</b></p>
-        <p>Ebenso kann der aktuelle lokale Datenbestand hochgeladen - und somit gesichert werden</p>
-        <p v-if="authenticated"><b>Eingeloggt</b></p>
+        <p>Ebenso kann der aktuelle lokale Datenbestand hochgeladen - und somit gesichert werden.</p>
+        <p v-if="authenticated"><b>Du bist angemeldet</b></p>
         <b-button v-else @click="login" variant="dark">Login with Google</b-button>
       </b-col>
     </b-row>
