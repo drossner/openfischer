@@ -5,7 +5,7 @@
         <b-img center block class="header-img" :src="'icon.png'"></b-img>
         <h3 center >OpenFischer</h3>
         <p>OpenFischer ist der Versuch, ein freies, nicht-kommerzielles Tool zur Verfügung zu stellen, um
-        angehende Anwärterinnen und Anwärter für den <em>bayerischen</em> Fischereischein zu unterstützen.
+        angehende Anwärterinnen und Anwärter bei der Vorbereitung für den <em>bayerischen</em> Fischereischein zu unterstützen.
           Umgesetzt als <a href="https://de.wikipedia.org/wiki/Progressive_Web_App">PWA</a> (<b>P</b>rogressive <b>W</b>eb <b>A</b>pp),
         werden sämtliche Daten lokal auf Ihrem Gerät gespeichert. Aus diesem Grund ist kein Nutzer-Account nötig und die Offline-Verwendung
           der App möglich.</p>
@@ -17,7 +17,7 @@
             </b-card-header>
             <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
               <b-card-body>
-                <b-card-text>Alle fragen für die bayerische Fischereiprüfung stehen online zur Verfügung,
+                <b-card-text>Alle Fragen für die bayerische Fischereiprüfung stehen online zur Verfügung,
                 zu finden unter diesem Link: <a href="https://www.lfl.bayern.de/ifi/fischerpruefung/125173/index.php">https://www.lfl.bayern.de/ifi/fischerpruefung/125173/index.php</a>
                 </b-card-text>
                 <b-card-text>Entnommen wurde der Stand 2018-2021/22. Dort zu entnehmen sind ebenfalls die <b>Nutzungsbedingungen:</b></b-card-text>
@@ -58,7 +58,7 @@
             <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
               <b-card-body>
                 <b-card-text>Es handelt sich hier um eine <b>rein private</b> Webseite. Es gibt kein kommerzielles
-                Interesse, weder durch den Verkauf von Leistungen/Produkten noch irgendeine Form von Werbebannern
+                Interesse, weder durch den Verkauf von Leistungen/Produkten noch durch den Einsatz irgendeiner Form von Werbebannern
                 oder Werbung generell. Der Kontakt ist über das verlinkte <a href="https://github.com/drossner/openfischer">Github-Repository</a>
                 oder über diese Mail-Addresse möglich: openfischer at posteo de. (at und de entsprechend mit Punkten etc. einsetzen)</b-card-text>
               </b-card-body>
