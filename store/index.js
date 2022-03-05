@@ -3,7 +3,7 @@ export const state = () => ({
   settings: {}, //initialized with init action
   questionLocal: {}, // as settings, a id -> local data map
   allQuestionIds: [], //to have them at hand, fast..
-  exams: [],
+  exams: [], //exams
 })
 
 export const mutations = {

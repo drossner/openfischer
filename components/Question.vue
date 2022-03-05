@@ -26,7 +26,7 @@
             stacked
             buttons
             class="btn-block"
-            button-variant="dark"
+            :button-variant="elementVariant"
             size="lg"
           >
             <b-form-radio
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "Question",
   props: ['question'],
@@ -79,7 +81,8 @@ export default {
         state.variant = "secondary"
       }
       return state
-    }
+    },
+    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
   },
   methods: {
     check: function() {

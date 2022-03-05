@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card bg-variant="dark">
+    <b-card :bg-variant="elementVariant">
       <template #header >
           <h6 class="mb-0 d-inline-flex">Prüfung: #{{ exam.id }}</h6>
         <span class="ml-2"><small>{{ exam.started.toLocaleString() }}</small></span>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "ExamBlock",
   props: {
@@ -65,7 +67,8 @@ export default {
       if(this.correctAnswers < 45) return "danger"
       else if(this.exam.correctFK < 6 || this.exam.correctFG < 6 || this.exam.correctRV < 6 || this.exam.correctSP < 6) return "warning"
       else return "success"
-    }
+    },
+    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
   },
   methods: {
     removeExam: function () {
