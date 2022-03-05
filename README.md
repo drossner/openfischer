@@ -1,5 +1,31 @@
 # openfischer
 
+OpenFischer ist der Versuch, ein freies, nicht-kommerzielles Tool zur Verfügung zu stellen, um
+angehende Anwärterinnen und Anwärter bei der Vorbereitung für den **bayerischen** Fischereischein zu unterstützen.
+Umgesetzt als [PWA](https://de.wikipedia.org/wiki/Progressive_Web_App">) (**P**rogressive **W**eb **A**pp),
+werden sämtliche Daten lokal auf Ihrem Gerät gespeichert. Aus diesem Grund ist kein Nutzer-Account nötig und die Offline-Verwendung
+der App möglich.
+
+## Anmerkung zur Lizenz
+
+Der Quellcode untersteht der in der LICENSE Datei genannten Lizenz. Davon unberührt bleibt:
+
+- Das Logo ("Drei Fische auf einer Welle")
+- Die Fragen
+- Die Bilder zu den Fragen
+
+Der Freistaat Bayern stellt die Fragen zur Fischereiprüfung selbst [auf seiner Homepage](https://www.lfl.bayern.de/ifi/fischerpruefung/125173/index.php)
+zur Verfügung. Die entsprechende Nutzungslizenz ist dort zu finden. Dies betrifft auch die Bilder aus den Fragen;
+deren kommerzielle Verwendung ist nur mit Erlaubnis der Rechteinhaber gestattet.
+
+- B 1.1: LfL, Institut für Fischerei, Starnberg
+- B 1.2 – 1.24: Atelier Ziegler, Kitzingen
+- B 2.1 – 2.6: Vereinigung Deutscher Gewässerschutz e.V.
+- B 3.1 – 3.9 und 3.11 – 3.17: Fa. Cormoran / Fishermans Partner
+- B 3.10: Landesfischereiverband Bayern e.V.
+- B 4.1 – 4.7: Andreas Glock, Geesthacht
+
+
 ## Build Setup
 
 ```bash
@@ -17,53 +43,3 @@ $ npm run start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
-
-## Special Directories
-
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
-
-### `assets`
-
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
-
-### `components`
-
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
-
-### `pages`
-
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
