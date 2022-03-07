@@ -3,7 +3,7 @@
     <b-row class="mb-3">
       <b-col>
         <b-input-group>
-          <b-form-input variant="dark" placeholder="Fragen durchsuchen" v-model="enteredText" @input="startQuery"></b-form-input>
+          <b-form-input :variant="elementVariant" placeholder="Fragen durchsuchen" v-model="enteredText" @input="startQuery"></b-form-input>
         </b-input-group>
       </b-col>
     </b-row>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: 'Overview',
   data: function () {
@@ -73,7 +75,8 @@ export default {
     },
     numberOfPages: function () {
       return Math.ceil(this.allData.length / this.pageLimit)
-    }
+    },
+    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
   }
 }
 </script>

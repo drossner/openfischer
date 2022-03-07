@@ -13,7 +13,7 @@
         <p><b>Achtung: Das Herunterladen eines Speicherstandes löscht ALLE lokalen Daten und übernimmt die heruntergeladenenen!</b></p>
         <p>Ebenso kann der aktuelle lokale Datenbestand hochgeladen - und somit gesichert werden.</p>
         <p v-if="authenticated"><b>Du bist angemeldet</b></p>
-        <b-button v-else @click="login" variant="dark">Login with Google</b-button>
+        <b-button v-else @click="login" :variant="primaryButtonVariant">Login with Google</b-button>
       </b-col>
     </b-row>
     <template v-if="authenticated">
@@ -29,7 +29,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <b-card class="mb-3" v-for="appData in appDataFiles" :key="appData.id" bg-variant="dark">
+          <b-card class="mb-3" v-for="appData in appDataFiles" :key="appData.id" :bg-variant="elementVariant">
             <template #header >
               <h6 class="mb-0 d-inline-flex">{{ appData.name }}</h6>
               <span class="float-right ml-3" @click="removeSave(appData.id)"><font-awesome-icon  role="button" :icon="['fa', 'trash-can']" /></span>
@@ -46,6 +46,7 @@
 
 <script>
 import sync from "@/lib/DataSyncHelper";
+import {mapGetters} from "vuex";
 
 export default {
   name: "sync",
@@ -60,6 +61,7 @@ export default {
     authenticated: function () {
       return this.$store.state.googlesync.alreadyUsed && Date.now()/1000 - this.$store.state.googlesync.loginTime/1000 < this.$store.state.googlesync.loginTime/1000 + this.$store.state.googlesync.token.expires_in
     },
+    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
   },
   async asyncData({ route, store }) {
     //this runs before the component is rendered!

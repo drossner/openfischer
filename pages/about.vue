@@ -11,7 +11,7 @@
           der App möglich.</p>
 
         <div class="accordion" role="tablist">
-          <b-card bg-variant="dark" no-body class="mb-1">
+          <b-card :bg-variant="elementVariant" no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
               <b-button block v-b-toggle.accordion-1 variant="secondary">Woher stammen die Fragen?</b-button>
             </b-card-header>
@@ -37,7 +37,7 @@
             </b-collapse>
           </b-card>
 
-          <b-card bg-variant="dark" no-body class="mb-1">
+          <b-card :bg-variant="elementVariant" no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
               <b-button block v-b-toggle.accordion-2 variant="secondary">Wo finde ich den Quellcode?</b-button>
             </b-card-header>
@@ -51,7 +51,7 @@
             </b-collapse>
           </b-card>
 
-          <b-card bg-variant="dark" no-body class="mb-1">
+          <b-card :bg-variant="elementVariant" no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
               <b-button block v-b-toggle.accordion-3 variant="secondary">Warum gibt es kein Impressum?</b-button>
             </b-card-header>
@@ -72,8 +72,13 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
-  name: "about"
+  name: "about",
+  computed: {
+    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
+  }
 }
 </script>
 

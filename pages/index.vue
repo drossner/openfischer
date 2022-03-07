@@ -36,12 +36,12 @@
     </b-row>
     <b-row>
       <b-col class="d-inline-flex w-100 justify-content-between">
-        <b-button class="w-100" variant="dark" @click="nextQuestion">Starte mit zufälliger Frage</b-button>
+        <b-button class="w-100" :variant="primaryButtonVariant" @click="nextQuestion">Starte mit zufälliger Frage</b-button>
         <span class="ml-3 mt-1" @click="openSettings"><font-awesome-icon  class="align-middle" role="button" :icon="['fa', 'gear']" /></span>
       </b-col>
     </b-row>
     <b-modal centered ref="settings-modal" title="Einstellungen" hide-footer
-             header-bg-variant="dark" body-bg-variant="dark" footer-bg-variant="dark">
+             :header-bg-variant="elementVariant" :body-bg-variant="elementVariant" :footer-bg-variant="elementVariant">
       <Settings ref="settings"></Settings>
       <b-button class="mt-3" variant="secondary" block @click="hideModal">Speichern</b-button>
     </b-modal>
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: 'Home',
   data: function () {
@@ -138,7 +140,7 @@ export default {
 
   },
   computed: {
-
+    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
   }
 }
 </script>
