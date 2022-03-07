@@ -48,7 +48,7 @@
 import sync from "@/lib/DataSyncHelper";
 
 export default {
-  name: "experiment",
+  name: "sync",
   data: function () {
     return {
       appDataFiles: [],
@@ -69,9 +69,6 @@ export default {
   methods: {
     login: function () {
       sync.forwardToLogin(location.protocol + '//' + location.host + '/openfischer' + this.$route.path)
-    },
-    storeDummy: function() {
-      sync.storeFile(this.$store.state.googlesync.token['access_token'],'config.json', {test: 'hahaha works'})
     },
     getData: function() {
       this.appDataFiles = []

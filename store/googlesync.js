@@ -1,6 +1,7 @@
 export const state = () => ({
   alreadyUsed: false,
   token: {},
+  refreshToken: '',
   loginTime: 0
 })
 
