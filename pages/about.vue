@@ -1,5 +1,5 @@
 <template>
-  <MainNav>
+  <div>
     <b-row>
       <b-col>
         <b-img center block class="header-img" :src="'icon.png'"></b-img>
@@ -68,7 +68,7 @@
       </b-col>
     </b-row>
 
-  </MainNav>
+  </div>
 </template>
 
 <script>

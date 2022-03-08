@@ -1,5 +1,5 @@
 <template>
-  <MainNav>
+  <div>
     <b-row class="mb-5">
       <b-col>
         <h5>Fischkunde</h5>
@@ -45,7 +45,7 @@
       <Settings ref="settings"></Settings>
       <b-button class="mt-3" variant="secondary" block @click="hideModal">Speichern</b-button>
     </b-modal>
-  </MainNav>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <MainNav>
+  <div>
     <b-row class="mb-3">
       <b-col>
         <b-input-group>
@@ -26,7 +26,7 @@
         <b-pagination v-model="currentPage"  per-page="pageLimit" :total-rows="allData.length" use-router></b-pagination>
       </b-col>
     </b-row>
-  </MainNav>
+  </div>
 </template>
 
 <script>

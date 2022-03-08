@@ -37,15 +37,19 @@ export const mutations = {
       state.questionLocal[data.id].correct = data.correct
     }
 
+    state.googlesync.modelDirty = true
+
     this.$localForage.nuxtLocalForage.setItem(data.id, value)
   },
   addExam(state, exam) {
     state.exams.push(exam)
+    state.googlesync.modelDirty = true
     this.$localForage.meta.setItem("EXAMS", this.state.exams)
   },
   removeExam(state, id) {
     const index = state.exams.map(elem => elem.id).indexOf(id)
     state.exams.splice(index, 1)
+    state.googlesync.modelDirty = true
     this.$localForage.meta.setItem("EXAMS", this.state.exams)
   },
   examNextQuestion(state, data) {
@@ -60,6 +64,8 @@ export const mutations = {
     if(exam.currQst >= 59) {
       exam.ended = new Date()
     } else exam.currQst++
+
+    state.googlesync.modelDirty = true
 
     this.$localForage.meta.setItem("EXAMS", state.exams)
   },

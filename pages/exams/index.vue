@@ -1,5 +1,5 @@
 <template>
- <MainNav>
+ <div>
    <b-row class="mb-5">
      <b-col>
        <h5>Probeprüfungen</h5>
@@ -17,7 +17,7 @@
        </b-card-group>
      </b-col>
    </b-row>
- </MainNav>
+ </div>
 </template>
 
 <script>

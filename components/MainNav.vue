@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="mb-5">
     <b-overlay
       rounded
       opacity="0.7"
@@ -29,6 +29,9 @@
     </b-navbar>
 
       <slot></slot>
+
+
+
 
       <template #overlay>
         <div class="text-center">

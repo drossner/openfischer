@@ -1,12 +1,12 @@
 <template>
-  <MainNav>
+  <div>
     <Question :question="question"></Question>
     <b-row align-h="between" class="mt-2">
       <b-col>
         <b-button block variant='secondary' @click="nextQuestion">Zufällige nächste Frage</b-button>
       </b-col>
     </b-row>
-  </MainNav>
+  </div>
 </template>
 
 <script>

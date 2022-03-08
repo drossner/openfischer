@@ -1,5 +1,5 @@
 <template>
-  <MainNav>
+  <div>
     <template v-if="exam.id !== undefined">
       <b-row>
         <b-col>
@@ -13,7 +13,7 @@
         </b-col>
       </b-row>
     </template>
-  </MainNav>
+  </div>
 </template>
 
 <script>

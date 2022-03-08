@@ -1,5 +1,5 @@
 <template>
-  <MainNav>
+  <div>
     <b-row>
       <b-col>
         <h4>Datensicherung</h4>
@@ -12,7 +12,7 @@
         können gelöscht, oder zum herunterladen ausgewählt werden.</p>
         <p><b>Achtung: Das Herunterladen eines Speicherstandes löscht ALLE lokalen Daten und übernimmt die heruntergeladenenen!</b></p>
         <p>Ebenso kann der aktuelle lokale Datenbestand hochgeladen - und somit gesichert werden.</p>
-        <p v-if="authenticated"><b>Du bist angemeldet</b></p>
+        <p v-if="authenticated"><b>Du bist angemeldet</b> Der Access-Token ist valide: {{tokenValid}}</p>
         <b-button v-else @click="login" :variant="primaryButtonVariant">Login with Google</b-button>
       </b-col>
     </b-row>
@@ -41,7 +41,7 @@
       </b-row>
     </template>
 
-  </MainNav>
+  </div>
 </template>
 
 <script>
@@ -59,26 +59,37 @@ export default {
   },
   computed: {
     authenticated: function () {
-      return this.$store.state.googlesync.alreadyUsed && Date.now()/1000 - this.$store.state.googlesync.loginTime/1000 < this.$store.state.googlesync.loginTime/1000 + this.$store.state.googlesync.token.expires_in
+      return this.$store.state.googlesync.alreadyUsed
+    },
+    tokenValid: function () {
+      return this.$store.getters["googlesync/isValid"]
     },
     ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
   },
   async asyncData({ route, store }) {
     //this runs before the component is rendered!
-    let params = sync.handleAccessToken(route.hash)
-    if(params.access_token !== undefined) store.commit('googlesync/login', params)
+    if(route.query.code !== undefined && store.state.googlesync.alreadyUsed === false)
+    sync.handleAccessToken(route.query.code, location.protocol + '//' + location.host + '/openfischer' + route.path, function (res) {
+      //access_token, expires_in, refresh_token
+      store.commit('googlesync/login', res)
+    })
+    //if(params.access_token !== undefined) store.commit('googlesync/login', params)
   },
   methods: {
     login: function () {
       sync.forwardToLogin(location.protocol + '//' + location.host + '/openfischer' + this.$route.path)
     },
-    getData: function() {
+    getData: async function() {
+      if(this.tokenValid === false) {
+        let data = await sync.refreshAccessToken(this.$store.state.googlesync.refreshToken)
+        this.$store.commit('googlesync/refreshAccessToken', data)
+      }
       this.appDataFiles = []
       this.loadingData = true
-      sync.loadConfig(this.$store.state.googlesync.token['access_token'], list => {
+      sync.loadConfig(this.$store.state.googlesync.token, list => {
         //this.appDataFiles = list.files
         for(let meta of list.files) {
-          sync.loadAConfig(this.$store.state.googlesync.token['access_token'], meta.id,theConf => {
+          sync.loadAConfig(this.$store.state.googlesync.token, meta.id,theConf => {
             this.appDataFiles.push({
               id: meta.id,
               name: meta.name,
@@ -90,7 +101,7 @@ export default {
       })
     },
     removeSave: function (fileId) {
-      sync.deleteAConfig(this.$store.state.googlesync.token['access_token'], fileId, (bool) => {
+      sync.deleteAConfig(this.$store.state.googlesync.token, fileId, (bool) => {
         let index = this.appDataFiles.map(appData => appData.id).indexOf(fileId)
         this.appDataFiles.splice(index, 1)
       })
@@ -98,7 +109,7 @@ export default {
     upload: function () {
       this.uploadingData = true
       sync.createExport(this.$localForage).then(exp => {
-        sync.storeFile(this.$store.state.googlesync.token['access_token'], "config.json", exp, res => {
+        sync.storeFile(this.$store.state.googlesync.token, "config.json", exp, res => {
           this.uploadingData = false
         })
       })
