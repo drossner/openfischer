@@ -17,15 +17,34 @@
 </template>
 
 <script>
+import sync from "@/lib/DataSyncHelper";
+
 export default {
   name: "default",
+  fetchOnServer: false,
   data: function() {
     return {
       inSync: false
     }
   },
-  async fetch(ctx) {
-    console.log("Sync active: " + ctx.store.state.googlesync.active)
+  async fetch() {
+    if(this.$store.state.googlesync.active) {
+      if(this.$store.getters["googlesync/isValid"] === false) {
+        let data = await sync.refreshAccessToken(this.$store.state.googlesync.refreshToken)
+        this.$store.commit('googlesync/refreshAccessToken', data)
+      }
+
+      let data = await sync.loadARunningState(this.$store.state.googlesync.token, this.$store.state.googlesync.syncFileId)
+      await this.$localForage.meta.clear()
+      await this.$localForage.meta.setItem("EXAMS", data.exams)
+      await this.$localForage.meta.setItem("SETTINGS", data.settings)
+      await this.$localForage.nuxtLocalForage.clear()
+      for(let key of Object.keys(data.localQuestions)) {
+        this.$localForage.nuxtLocalForage.setItem(key, data.localQuestions[key])
+      }
+      this.$store.dispatch('init', true)
+
+    }
 
   },
   computed: {
@@ -38,18 +57,21 @@ export default {
       else if(this.inSync) return 3
       else if(this.$store.state.googlesync.modelDirty === false) return 1
       else return 2
-    }
+    },
+    tokenValid: function () {
+      return this.$store.getters["googlesync/isValid"]
+    },
   },
   mounted() {
-    setInterval(() => {
+    setInterval(async () => {
       if(this.syncActive && this.syncState === 2) {
         this.inSync = true
         console.log("SYNC...")
-        //put sync code here!!
-        setTimeout(() => {
+        let exp = await sync.createExport(this.$localForage)
+        sync.runningStateUpload(this.$store.state.googlesync.token, exp, this.$store.state.googlesync.syncFileId, res => {
           this.$store.commit('googlesync/sync')
           this.inSync = false
-        }, 3000)
+        })
       }
     }, 30_000)
 

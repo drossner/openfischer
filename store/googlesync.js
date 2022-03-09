@@ -5,6 +5,8 @@ export const state = () => ({
   loginTime: parseInt(localStorage.getItem('LAST_LOGON')) || 0,
   expiresIn: parseInt(localStorage.getItem('EXPIRES_IN')) || 0,
   active: localStorage.getItem("SYNC_ACTIVE") === 'true' || false,
+  syncFileId: localStorage.getItem("SYNC_FILE_ID") || "",
+  lastSync: parseInt(localStorage.getItem("LAST_SYNC")) || 0,
   modelDirty: false
 })
 
@@ -34,12 +36,17 @@ export const mutations = {
     localStorage.setItem('LAST_LOGON', state.loginTime)
     localStorage.setItem('EXPIRES_IN', state.expiresIn)
   },
-  switchActive(state) {
-    state.active = !state.active
+  setState(state, newState) {
+    state.active = newState
     localStorage.setItem("SYNC_ACTIVE", `${state.active}`)
+  },
+  setFileId(state, id) {
+    state.syncFileId = id
+    localStorage.setItem("SYNC_FILE_ID", id)
   },
   sync(state) {
     state.modelDirty = false
+    state.lastSync = Date.now()
   }
 }
 
