@@ -54,6 +54,7 @@ export const mutations = {
   },
   examNextQuestion(state, data) {
     let exam = state.exams.find(exam => exam.id === data.id)
+    if(exam.ended !== null) return
     let qst = data.qst
     if(data.correct === false) qst = data.qst //nothing
     else if(qst < 12) exam.correctFK++
