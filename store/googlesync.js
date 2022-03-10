@@ -1,5 +1,5 @@
 export const state = () => ({
-  alreadyUsed: localStorage.getItem('REFRESH_TOKEN') !== null,
+  alreadyUsed: localStorage.getItem('REFRESH_TOKEN') !== null && localStorage.getItem('REFRESH_TOKEN') !== "",
   token: localStorage.getItem('ACCESS_TOKEN') || '',
   refreshToken: localStorage.getItem('REFRESH_TOKEN') || '',
   loginTime: parseInt(localStorage.getItem('LAST_LOGON')) || 0,
@@ -47,6 +47,25 @@ export const mutations = {
   sync(state) {
     state.modelDirty = false
     state.lastSync = Date.now()
+    localStorage.setItem("LAST_SYNC", state.lastSync+"")
+  },
+  logout(state) {
+    state.alreadyUsed = false
+    state.token = ""
+    state.refreshToken = ""
+    state.loginTime = 0
+    state.expiresIn = 0
+    state.active = false
+    state.syncFileId = ""
+    state.lastSync = 0
+    state.modelDirty = false
+    localStorage.setItem('ACCESS_TOKEN', state.token)
+    localStorage.setItem('REFRESH_TOKEN', state.refreshToken)
+    localStorage.setItem('LAST_LOGON', state.loginTime)
+    localStorage.setItem('EXPIRES_IN', state.expiresIn)
+    localStorage.setItem("SYNC_FILE_ID", "")
+    localStorage.setItem("SYNC_ACTIVE", `${state.active}`)
+    localStorage.setItem("LAST_SYNC", state.lastSync+"")
   }
 }
 

@@ -1,22 +1,47 @@
 <template>
   <div>
-    <b-row>
+    <b-row class="mb-4">
       <b-col>
         <h4>Datensicherung</h4>
+        <small>
         <p>Diese Seite erlaubt es den lokal gespeicherten Fortschritt mit GoogleDrive abzugleichen. Dazu ist ein Google-Login notwendig.
           Mit Hilfe der Sicherung kann der Fortschritt auf verschiedenen Geräten, z.B. dem Smartphone und dem PC,
           und über verschiedene Browser synchronisiert werden.
         Melde Dich mit deinem Google-Account an und bestätige den Zugriff. Mit den angefragten Berechtigungen können keine
-        andere Dateien von GoogleDrive gelesen oder verändert werden.</p>
-        <p>Nach der Anmeldung ist es möglich, eine Liste der auf Drive verfügbaren Speicherstände anzuzeigen. Die Speicherstände
-        können gelöscht, oder zum herunterladen ausgewählt werden.</p>
-        <p><b>Achtung: Das Herunterladen eines Speicherstandes löscht ALLE lokalen Daten und übernimmt die heruntergeladenen!</b></p>
-        <p>Ebenso kann der aktuelle lokale Datenbestand hochgeladen - und somit gesichert werden.</p>
-        <p v-if="authenticated"><b>Du bist angemeldet</b> Gültigkeit Access-Token: {{tokenValid}}</p>
-        <b-button v-else @click="login" :variant="primaryButtonVariant">Login with Google</b-button>
+        andere Dateien von GoogleDrive gelesen oder verändert werden.</p></small>
+
+        <p>
+          Nach der Anmeldung, gibt es zwei Möglichkeiten:
+        </p>
+
+        <p>
+        <b>Automatische Synchronisation</b>: Der Abgleich mit GoogleDrive funktioniert automatisch im Hintergrund. Am unteren
+          linken Bildschirmrand wird ein Symbol eingeblendet, welches den aktuellen Status dieses Abgleiches widerspiegelt.
+        </p>
+          <ul>
+            <li><font-awesome-icon  :icon="['fa', 'circle-check']" /> Lokaler Fortschritt ist mit GoogleDrive abgeglichen.</li>
+            <li><font-awesome-icon  :icon="['fa', 'hourglass']" /> Lokaler Fortschritt weicht ab, wird innerhalb der nächsten Minute automatisch synchronisiert.</li>
+            <li><font-awesome-icon  :icon="['fa', 'rotate']" /> Upload der lokalen Daten läuft.</li>
+          </ul>
+
+        <p><b>Manuelle Synchronisation</b>: Speicherstände können von Hand hoch- und heruntergeladen werden.</p>
+
+
+        <b-alert variant="danger" show>Achtung: Das Herunterladen eines Speicherstandes löscht ALLE lokalen Daten und übernimmt die heruntergeladenen!</b-alert>
+
+        <div v-if="authenticated">
+          <p><b>Du bist angemeldet</b> - Gültigkeit Access-Token: {{tokenValid}}</p>
+          <b-button block @click="logout" variant="secondary">Abmelden</b-button>
+        </div>
+
+        <b-button block v-else @click="login" :variant="primaryButtonVariant">Login with Google</b-button>
+
       </b-col>
     </b-row>
     <template v-if="authenticated">
+      <b-row class="mb-3">
+        <b-col><b-form-checkbox size="lg" v-model="active" switch>Automatische Synchronisation</b-form-checkbox></b-col>
+      </b-row>
       <b-row class="mb-2">
         <b-col>
           <b-button class="mb-2" :disabled="loadingData || active" @click="getData"><b-spinner v-if="loadingData" small></b-spinner>
@@ -26,7 +51,6 @@
         <b-col>
           <b-button :disabled="uploadingData || active" @click="upload"><b-spinner v-if="uploadingData" small></b-spinner> Lokalen Stand hochladen</b-button>
         </b-col>
-        <b-col><b-form-checkbox v-model="active" switch>Permanente Synchronisation</b-form-checkbox></b-col>
       </b-row>
       <b-row>
         <b-col>
@@ -137,11 +161,14 @@ export default {
       }
     }
   },
-  async asyncData({ route, store }) {
+  beforeMount() {
     //this runs before the component is rendered!
+    let route = this.$route
+    let store = this.$store
     if(route.query.code !== undefined && store.state.googlesync.alreadyUsed === false)
     sync.handleAccessToken(route.query.code, location.protocol + '//' + location.host + '/openfischer' + route.path, function (res) {
       //access_token, expires_in, refresh_token
+      console.log(res)
       store.commit('googlesync/login', res)
     })
     //if(params.access_token !== undefined) store.commit('googlesync/login', params)
@@ -149,6 +176,9 @@ export default {
   methods: {
     login: function () {
       sync.forwardToLogin(location.protocol + '//' + location.host + '/openfischer' + this.$route.path)
+    },
+    logout: function () {
+      this.$store.commit('googlesync/logout')
     },
     getData: async function() {
       if(this.tokenValid === false) {
