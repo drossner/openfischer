@@ -1,147 +1,210 @@
 <template>
-  <div>
-    <b-row class="mb-5">
-      <b-col>
-        <h5>Fischkunde</h5>
-        <b-progress  :max="nFK" height="3rem" show-value class="mb-3">
-          <b-progress-bar :value="lCorrectFK" variant="success"></b-progress-bar>
-          <b-progress-bar :value="lWrongFK" variant="danger"></b-progress-bar>
-          <b-progress-bar :value="nFK - lCorrectFK - lWrongFK" variant="secondary"></b-progress-bar>
-        </b-progress>
-        <h5>Gewässerkunde</h5>
-        <b-progress value="3" :max="nGK" height="3rem" show-value class="mb-3">
-          <b-progress-bar :value="lCorrectGK" variant="success"></b-progress-bar>
-          <b-progress-bar :value="lWrongGK" variant="danger"></b-progress-bar>
-          <b-progress-bar :value="nGK - lCorrectGK - lWrongGK" variant="secondary"></b-progress-bar>
-        </b-progress>
-        <h5>Schutz und Pflege</h5>
-        <b-progress value="3" :max="nSP" height="3rem" show-value class="mb-3">
-          <b-progress-bar :value="lCorrectSP" variant="success"></b-progress-bar>
-          <b-progress-bar :value="lWrongSP" variant="danger"></b-progress-bar>
-          <b-progress-bar :value="nSP - lCorrectSP - lWrongSP" variant="secondary"></b-progress-bar>
-        </b-progress>
-        <h5>Fanggeräte</h5>
-        <b-progress value="3" :max="nFG" height="3rem" show-value class="mb-3">
-          <b-progress-bar :value="lCorrectFG" variant="success"></b-progress-bar>
-          <b-progress-bar :value="lWrongFG" variant="danger"></b-progress-bar>
-          <b-progress-bar :value="nFG - lCorrectFG - lWrongFG" variant="secondary"></b-progress-bar>
-        </b-progress>
-        <h5>Rechtsvorschriften</h5>
-        <b-progress value="3" :max="nRV" height="3rem" show-value class="mb-3">
-          <b-progress-bar :value="lCorrectRV" variant="success"></b-progress-bar>
-          <b-progress-bar :value="lWrongRV" variant="danger"></b-progress-bar>
-          <b-progress-bar :value="nRV - lCorrectRV - lWrongRV" variant="secondary"></b-progress-bar>
-        </b-progress>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col class="d-inline-flex w-100 justify-content-between">
-        <b-button class="w-100" :variant="primaryButtonVariant" @click="nextQuestion">Starte mit zufälliger Frage</b-button>
-        <span class="ml-3 mt-1" @click="openSettings"><font-awesome-icon  class="align-middle" role="button" :icon="['fa', 'gear']" /></span>
-      </b-col>
-    </b-row>
-    <b-modal centered ref="settings-modal" title="Einstellungen" hide-footer
-             :header-bg-variant="elementVariant" :body-bg-variant="elementVariant" :footer-bg-variant="elementVariant">
-      <Settings ref="settings"></Settings>
-      <b-button class="mt-3" variant="secondary" block @click="hideModal">Speichern</b-button>
-    </b-modal>
-  </div>
+  <MainNav>
+    <!-- Welcome Header -->
+    <v-row class="mb-4">
+      <v-col>
+        <h3 class="text-h4 mb-2">Dein Lernfortschritt</h3>
+        <p class="text-subtitle-1 text-medium-emphasis">
+          Verfolge deinen Fortschritt in allen Kategorien der bayerischen Fischerprüfung
+        </p>
+      </v-col>
+    </v-row>
+
+    <!-- Progress Cards -->
+    <v-row>
+      <v-col cols="12" md="6" v-for="category in categories" :key="category.name">
+        <v-card class="category-card" :ripple="false">
+          <v-card-title class="d-flex align-center">
+            <v-icon :icon="category.icon" class="mr-2" color="primary" size="small"></v-icon>
+            <span>{{ category.name }}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-progress-linear
+              :model-value="category.progress.total"
+              :max="category.total"
+              height="36"
+              rounded
+            >
+              <div class="progress-segments">
+                <div
+                  class="segment segment-success"
+                  :style="{ width: `${(category.progress.correct / category.total) * 100}%` }"
+                ></div>
+                <div
+                  class="segment segment-error"
+                  :style="{ width: `${(category.progress.wrong / category.total) * 100}%` }"
+                ></div>
+                <div
+                  class="segment segment-secondary"
+                  :style="{ width: `${(category.progress.unanswered / category.total) * 100}%` }"
+                ></div>
+              </div>
+              <strong class="progress-text">{{ category.progress.correct + category.progress.wrong }} / {{ category.total }}</strong>
+            </v-progress-linear>
+            <div class="d-flex justify-space-between mt-2 text-caption">
+              <span class="text-success">✓ {{ category.progress.correct }} richtig</span>
+              <span class="text-error">✗ {{ category.progress.wrong }} falsch</span>
+              <span class="text-medium-emphasis">○ {{ category.progress.unanswered }} offen</span>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Action Buttons -->
+    <v-row class="mt-4">
+      <v-col>
+        <v-card class="pa-4">
+          <div class="d-flex align-center ga-2">
+            <v-btn
+              color="primary"
+              size="x-large"
+              class="flex-grow-1"
+              prepend-icon="mdi-play-circle"
+              @click="startRandomQuestion"
+              style="min-width: 0;"
+            >
+              <span class="d-none d-sm-inline">Starte mit zufälliger Frage</span>
+              <span class="d-sm-none">Starten</span>
+            </v-btn>
+            <v-btn
+              icon="mdi-cog"
+              size="large"
+              variant="outlined"
+              @click="showSettingsDialog = true"
+              class="flex-shrink-0"
+            ></v-btn>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Settings Dialog -->
+    <v-dialog v-model="showSettingsDialog" max-width="600">
+      <v-card class="dialog-solid">
+        <v-card-title>Einstellungen</v-card-title>
+        <v-card-text>
+          <Settings @close="handleSettingsSave" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </MainNav>
 </template>
 
-<script>
-import {mapGetters} from "vuex";
+<script setup lang="ts">
+import catalogData from '~/content/catalog.json'
 
-export default {
-  name: 'Home',
-  data: function () {
+const router = useRouter()
+const appStore = useAppStore()
+
+const showSettingsDialog = ref(false)
+
+// Category definitions with icons
+const categoryDefinitions = [
+  { name: 'Fischkunde', icon: 'mdi-fish' },
+  { name: 'Gewässerkunde', icon: 'mdi-waves' },
+  { name: 'Schutz und Pflege', icon: 'mdi-shield-check' },
+  { name: 'Fanggeräte', icon: 'mdi-hook' },
+  { name: 'Rechtsvorschriften', icon: 'mdi-gavel' }
+]
+
+// Build categories array with progress
+const categories = computed(() => {
+  return categoryDefinitions.map(cat => {
+    const total = catalogData.filter((q: any) => q.category === cat.name).length
+    const progress = calculateProgress(cat.name, total)
     return {
-      qstDatas: [],
-      nFK: 0,
-      nGK: 0,
-      nSP: 0,
-      nFG: 0,
-      nRV: 0,
-      lCorrectFK: 0,
-      lCorrectGK: 0,
-      lCorrectSP: 0,
-      lCorrectFG: 0,
-      lCorrectRV: 0,
-      lWrongFK: 0,
-      lWrongGK: 0,
-      lWrongSP: 0,
-      lWrongFG: 0,
-      lWrongRV: 0,
+      name: cat.name,
+      icon: cat.icon,
+      total,
+      progress
     }
-  },
-  methods: {
-    nextQuestion: function() {
-      let categories = this.$store.getters.categoryNames
-      //filter for not unanswered only at the moment
-      let allowedIds = this.$store.getters.filteredQuestionIds;
-      if(allowedIds.length <= 0){
-        alert("Keine weiteren Fragen verfügbar, bitte Einstellungen prüfen!")
-        return
-      }
-      let filter = {
-        category: {
-          $in: categories
-        },
-        id: { $in: allowedIds }
-      }
+  })
+})
 
-      this.$content('catalog')
-        .where(filter)
-        .only(['id']).fetch()
-        .then(res => {
-          const next = res[Math.floor(Math.random()*res.length)].id
-          this.$router.push("/catalog/"+next)
-        })
-    },
-    openSettings: function () {
-      this.$refs['settings-modal'].show();
-    },
-    hideModal: function () {
-      this.$refs.settings.saveSettings();
-      this.$refs['settings-modal'].hide();
+function calculateProgress(category: string, total: number) {
+  let correct = 0
+  let wrong = 0
+
+  const categoryQuestions = catalogData.filter((q: any) => q.category === category)
+
+  for (const q of categoryQuestions) {
+    const answer = appStore.questionLocal[q.id]
+    if (answer) {
+      if (answer.correct) correct++
+      else wrong++
     }
-  },
-  async fetch() {
-    let FK = await this.$content('catalog').where({category: {$eq: "Fischkunde"}}).only(['id']).fetch();
-    let GK = await this.$content('catalog').where({category: {$eq: "Gewässerkunde"}}).only(['id']).fetch();
-    let SP = await this.$content('catalog').where({category: {$eq: "Schutz und Pflege"}}).only(['id']).fetch();
-    let FG = await this.$content('catalog').where({category: {$eq: "Fanggeräte"}}).only().fetch(['id']);
-    let RV = await this.$content('catalog').where({category: {$eq: "Rechtsvorschriften"}}).only(['id']).fetch();
-    this.nFK = FK.length;
-    this.nGK = GK.length;
-    this.nSP = SP.length;
-    this.nFG = FG.length;
-    this.nRV = RV.length;
-
-    //const localAnswered = await this.$localForage.keys();
-
-    this.$localForage.iterate((value, key, i) => {
-      if(key.startsWith("1") || key.startsWith("B1")) {
-        if(value.correct) this.lCorrectFK++;
-        else this.lWrongFK++
-      } else if(key.startsWith("2") || key.startsWith("B2")) {
-        if(value.correct) this.lCorrectGK++;
-        else this.lWrongGK++
-      } else if(key.startsWith("3")) {
-        if(value.correct) this.lCorrectSP++;
-        else this.lWrongSP++
-      } else if(key.startsWith("4") || key.startsWith("B4") || key.startsWith("B3")) {
-        if(value.correct) this.lCorrectFG++;
-        else this.lWrongFG++
-      } else if(key.startsWith("5") || key.startsWith("B5")) {
-        if(value.correct) this.lCorrectRV++;
-        else this.lWrongRV++
-      }
-    });
-
-  },
-  computed: {
-    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
   }
+
+  return {
+    correct,
+    wrong,
+    unanswered: total - correct - wrong,
+    total: correct + wrong
+  }
+}
+
+function startRandomQuestion() {
+  const categories = appStore.categoryNames
+  const allowedIds = appStore.filteredQuestionIds
+
+  if (allowedIds.length <= 0) {
+    alert('Keine weiteren Fragen verfügbar, bitte Einstellungen prüfen!')
+    return
+  }
+
+  // Filter questions by category and allowed IDs
+  const availableQuestions = catalogData.filter((q: any) => {
+    return categories.includes(q.category) && allowedIds.includes(q.id)
+  })
+
+  if (availableQuestions.length === 0) {
+    alert('Keine Fragen verfügbar!')
+    return
+  }
+
+  // Pick random question
+  const randomIndex = Math.floor(Math.random() * availableQuestions.length)
+  const nextId = availableQuestions[randomIndex].id
+
+  router.push(`/catalog/${nextId}`)
+}
+
+function handleSettingsSave() {
+  showSettingsDialog.value = false
 }
 </script>
 
+<style scoped>
+.progress-segments {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.segment {
+  height: 100%;
+}
+
+.segment-success {
+  background-color: #4CAF50;
+}
+
+.segment-error {
+  background-color: #FF5252;
+}
+
+.segment-secondary {
+  background-color: #9E9E9E;
+}
+
+.progress-text {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+</style>

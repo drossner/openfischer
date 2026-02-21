@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>B-Question Image Matcher</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    h1 { color: #333; }
+    .instructions {
+      background: #f0f0f0;
+      padding: 15px;
+      border-left: 4px solid #0066cc;
+      margin-bottom: 20px;
+    }
+    .page-section {
+      border: 2px solid #333;
+      padding: 15px;
+      margin: 20px 0;
+      background: white;
+    }
+    .page-header {
+      background: #333;
+      color: white;
+      padding: 10px;
+      margin: -15px -15px 15px -15px;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    .image-item {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      background: #fafafa;
+    }
+    .image-item img {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    .image-name {
+      font-family: monospace;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .question-id {
+      font-weight: bold;
+      color: #0066cc;
+      font-size: 14px;
+    }
+    .commands {
+      background: #ffe;
+      border: 1px solid #cc9;
+      padding: 15px;
+      margin-top: 20px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .commands h3 {
+      margin-top: 0;
+      font-family: Arial, sans-serif;
+    }
+    input {
+      width: 80px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      font-family: monospace;
+    }
+    button {
+      background: #0066cc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #0052a3;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐟 B-Question Image Matcher</h1>
+
+  <div class="instructions">
+    <h3>Instructions:</h3>
+    <ol>
+      <li>Open the PDF (Fragenkatalog_2025-2026_Stand-2025-12-10.pdf) in another window</li>
+      <li>For each page below, compare the extracted images with the PDF</li>
+      <li>Enter the correct B-question ID for each image (e.g., B2.7, B3.1)</li>
+      <li>Click "Generate Rename Commands" to get bash commands to rename the files</li>
+    </ol>
+    <p><strong>Note:</strong> Images are shown in extraction order (000, 001, 002...), which is NOT the visual order in the PDF!</p>
+  </div>
+
+  <!-- Page 143: B2.1-B2.6 -->
+  <div class="page-section">
+    <div class="page-header">
+      <h2>Page 143 - B2.1 through B2.6</h2>
+    </div>
+    <div class="image-grid">
+      <div class="image-item">
+        <img src="extracted-images/img-143-000.jpg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Image not found</text></svg>'">
+        <div class="image-name">img-143-000.jpg</div>
+        <input type="text" id="img-143-000" placeholder="B2.?" value="B2.1">
+      </div>
+      <div class="image-item">
+        <img src="extracted-images/img-143-001.jpg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Image not found</text></svg>'">
+        <div class="image-name">img-143-001.jpg</div>
+        <input type="text" id="img-143-001" placeholder="B2.?" value="B2.2">
+      </div>
+      <div class="image-item">
+        <img src="extracted-images/img-143-002.jpg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Image not found</text></svg>'">
+        <div class="image-name">img-143-002.jpg</div>
+        <input type="text" id="img-143-002" placeholder="B2.?" value="B2.3">
+      </div>
+      <div class="image-item">
+        <img src="extracted-images/img-143-003.jpg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Image not found</text></svg>'">
+        <div class="image-name">img-143-003.jpg</div>
+        <input type="text" id="img-143-003" placeholder="B2.?" value="B2.4">
+      </div>
+      <div class="image-item">
+        <img src="extracted-images/img-143-004.jpg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Image not found</text></svg>'">
+        <div class="image-name">img-143-004.jpg</div>
+        <input type="text" id="img-143-004" placeholder="B2.?" value="B2.5">
+      </div>
+      <div class="image-item">
+        <img src="extracted-images/img-143-005.jpg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Image not found</text></svg>'">
+        <div class="image-name">img-143-005.jpg</div>
+        <input type="text" id="img-143-005" placeholder="B2.?" value="B2.6">
+      </div>
+    </div>
+  </div>
+
+  <!-- Add more page sections as needed -->
+  <div class="page-section">
+    <div class="page-header">
+      <h2>Other Pages - Add as needed</h2>
+    </div>
+    <p>Add more page sections by duplicating the structure above for pages 144-152</p>
+  </div>
+
+  <button onclick="generateCommands()">Generate Rename Commands</button>
+
+  <div class="commands" id="output" style="display:none;">
+    <h3>Bash Commands to Rename Images:</h3>
+    <pre id="commands-text"></pre>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+  </div>
+
+  <script>
+    function generateCommands() {
+      const inputs = document.querySelectorAll('input[type="text"]');
+      const commands = ['#!/bin/bash', 'mkdir -p images', ''];
+
+      inputs.forEach(input => {
+        const sourceFile = input.id.replace(/-/g, '-');
+        const questionId = input.value.trim();
+        if (questionId && /^B[1-4]\.\d+$/.test(questionId)) {
+          commands.push(`cp extracted-images/${sourceFile}.jpg images/${questionId}.jpg`);
+        }
+      });
+
+      document.getElementById('commands-text').textContent = commands.join('\n');
+      document.getElementById('output').style.display = 'block';
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById('commands-text').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Commands copied to clipboard!');
+      });
+    }
+  </script>
+</body>
+</html>

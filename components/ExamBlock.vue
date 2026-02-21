@@ -1,86 +1,190 @@
 <template>
-  <div>
-    <b-card :bg-variant="elementVariant">
-      <template #header >
-          <h6 class="mb-0 d-inline-flex">Prüfung: #{{ exam.id }}</h6>
-        <span class="ml-2"><small>{{ exam.started.toLocaleString() }}</small></span>
-        <span class="float-right ml-3" @click="removeExam"><font-awesome-icon  role="button" :icon="['fa', 'trash-can']" /></span>
-      </template>
-      <b-card-text>
-        <span class="mr-2 text-muted align-middle">Status: <b>{{ msg }}</b></span>
-        <span v-if="successful === 2" class="mr-4"><font-awesome-icon  :icon="['fa', 'check']" /></span>
-        <span v-if="successful === 1" class="mr-4"><font-awesome-icon  :icon="['fa', 'x']" /></span>
-        <b-button class="d-inline-block float-right"
-        v-if="exam.ended === null"
-        @click="$router.push(`/exams/${exam.id}`)"
-        >Starten</b-button>
-        <b-button  class="d-inline-block float-right" v-else  v-b-toggle="'collapse-'+exam.id" variant="outline-info" @click.prevent>Details</b-button>
-      </b-card-text>
-      <b-card-text v-if="exam.ended !== null">
+  <v-card>
+    <v-card-title class="d-flex align-center">
+      <span>Prüfung: #{{ exam.id }}</span>
+      <span class="ml-2 text-caption">{{ formatDate(exam.started) }}</span>
+      <v-spacer></v-spacer>
+      <v-btn icon size="small" @click="handleRemoveExam">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-card-title>
 
-        <b-collapse :id="'collapse-'+exam.id">
-          Fischkunde <b-progress class="mb-2" show-value max="12" :variant="exam.correctFK >= 6? 'success' : 'danger'" :value="exam.correctFK"></b-progress>
-          Gewässerkunde <b-progress class="mb-2" show-value max="12" :variant="exam.correctGK >= 6? 'success' : 'danger'" :value="exam.correctGK"></b-progress>
-          Schutz und Pflege <b-progress class="mb-2" show-value max="12" :variant="exam.correctSP >= 6? 'success' : 'danger'" :value="exam.correctSP"></b-progress>
-          Fanggeräte <b-progress class="mb-2" show-value max="12" :variant="exam.correctFG >= 6? 'success' : 'danger'" :value="exam.correctFG"></b-progress>
-          Rechtsvorschriften <b-progress class="mb-2" show-value max="12" :variant="exam.correctRV >= 6? 'success' : 'danger'":value="exam.correctRV"></b-progress>
-        </b-collapse>
-      </b-card-text>
-    <template #footer>
-      <b-progress class="ml-2" show-value block max="60" :value="correctAnswers"  :variant="progressVariant">
-      </b-progress>
-    </template>
-    </b-card>
-  </div>
+    <v-card-text>
+      <div class="d-flex align-center mb-2">
+        <span class="text-medium-emphasis">Status: <strong>{{ msg }}</strong></span>
+        <v-icon v-if="successful === 2" color="success" class="ml-2">mdi-check</v-icon>
+        <v-icon v-if="successful === 1" color="error" class="ml-2">mdi-close</v-icon>
+        <v-spacer></v-spacer>
+        <v-btn
+          v-if="exam.ended === null"
+          color="primary"
+          @click="navigateTo(`/exams/${exam.id}`)"
+        >
+          Starten
+        </v-btn>
+        <v-btn
+          v-else
+          variant="outlined"
+          color="info"
+          @click="showDetails = !showDetails"
+        >
+          Details
+        </v-btn>
+      </div>
+
+      <!-- Details (Collapsible) -->
+      <v-expand-transition>
+        <div v-if="showDetails && exam.ended !== null">
+          <v-divider class="my-3"></v-divider>
+
+          <div class="mb-2">
+            <div class="text-caption mb-1">Fischkunde</div>
+            <v-progress-linear
+              :model-value="exam.correctFK"
+              :max="12"
+              :color="exam.correctFK >= 6 ? 'success' : 'error'"
+              height="25"
+            >
+              <strong>{{ exam.correctFK }} / 12</strong>
+            </v-progress-linear>
+          </div>
+
+          <div class="mb-2">
+            <div class="text-caption mb-1">Gewässerkunde</div>
+            <v-progress-linear
+              :model-value="exam.correctGK"
+              :max="12"
+              :color="exam.correctGK >= 6 ? 'success' : 'error'"
+              height="25"
+            >
+              <strong>{{ exam.correctGK }} / 12</strong>
+            </v-progress-linear>
+          </div>
+
+          <div class="mb-2">
+            <div class="text-caption mb-1">Schutz und Pflege</div>
+            <v-progress-linear
+              :model-value="exam.correctSP"
+              :max="12"
+              :color="exam.correctSP >= 6 ? 'success' : 'error'"
+              height="25"
+            >
+              <strong>{{ exam.correctSP }} / 12</strong>
+            </v-progress-linear>
+          </div>
+
+          <div class="mb-2">
+            <div class="text-caption mb-1">Fanggeräte</div>
+            <v-progress-linear
+              :model-value="exam.correctFG"
+              :max="12"
+              :color="exam.correctFG >= 6 ? 'success' : 'error'"
+              height="25"
+            >
+              <strong>{{ exam.correctFG }} / 12</strong>
+            </v-progress-linear>
+          </div>
+
+          <div class="mb-2">
+            <div class="text-caption mb-1">Rechtsvorschriften</div>
+            <v-progress-linear
+              :model-value="exam.correctRV"
+              :max="12"
+              :color="exam.correctRV >= 6 ? 'success' : 'error'"
+              height="25"
+            >
+              <strong>{{ exam.correctRV }} / 12</strong>
+            </v-progress-linear>
+          </div>
+        </div>
+      </v-expand-transition>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-progress-linear
+        :model-value="correctAnswers"
+        :max="60"
+        :color="progressColor"
+        height="30"
+        class="flex-grow-1"
+      >
+        <strong>{{ correctAnswers }} / 60</strong>
+      </v-progress-linear>
+    </v-card-actions>
+  </v-card>
 </template>
 
-<script>
-import {mapGetters} from "vuex";
+<script setup lang="ts">
+interface Exam {
+  id: number
+  started: Date
+  ended: Date | null
+  correctFK: number
+  correctGK: number
+  correctSP: number
+  correctFG: number
+  correctRV: number
+  currQst: number
+}
 
-export default {
-  name: "ExamBlock",
-  props: {
-    exam: Object
-  },
-  data: function () {
-    return {
+const props = defineProps<{
+  exam: Exam
+}>()
 
-    }
-  },
-  computed: {
-    successful: function() {
-      if(this.exam.ended === null) return 0
-      else if(this.correctAnswers >= 45 && this.exam.correctFK >= 6 && this.exam.correctFG >= 6 && this.exam.correctRV >= 6 && this.exam.correctSP >= 6) {
-        return 2
-      } else return 1
-    },
-    msg: function () {
-      if(this.successful === 0) return "Nicht beendet"
-      else if(this.successful === 2) {
-        return "Bestanden"
-      } else return "Nicht bestanden"
-    },
-    correctAnswers: function () {
-      return this.exam.correctFK + this.exam.correctFG + this.exam.correctGK + this.exam.correctRV + this.exam.correctSP
-    },
-    progressVariant: function () {
-      if(this.correctAnswers < 45) return "danger"
-      else if(this.exam.correctFK < 6 || this.exam.correctFG < 6 || this.exam.correctRV < 6 || this.exam.correctSP < 6) return "warning"
-      else return "success"
-    },
-    ...mapGetters('theme', ['primaryButtonVariant', 'elementVariant', 'isDark'])
-  },
-  methods: {
-    removeExam: function () {
-      this.$store.commit('removeExam', this.exam.id)
-    }
-  }
+const appStore = useAppStore()
+const showDetails = ref(false)
+
+// Computed
+const correctAnswers = computed(() => {
+  return props.exam.correctFK + props.exam.correctFG + props.exam.correctGK +
+         props.exam.correctRV + props.exam.correctSP
+})
+
+const successful = computed(() => {
+  if (props.exam.ended === null) return 0
+  else if (
+    correctAnswers.value >= 45 &&
+    props.exam.correctFK >= 6 &&
+    props.exam.correctFG >= 6 &&
+    props.exam.correctRV >= 6 &&
+    props.exam.correctSP >= 6 &&
+    props.exam.correctGK >= 6
+  ) {
+    return 2 // Passed
+  } else return 1 // Failed
+})
+
+const msg = computed(() => {
+  if (successful.value === 0) return 'Nicht beendet'
+  else if (successful.value === 2) return 'Bestanden'
+  else return 'Nicht bestanden'
+})
+
+const progressColor = computed(() => {
+  if (correctAnswers.value < 45) return 'error'
+  else if (
+    props.exam.correctFK < 6 ||
+    props.exam.correctFG < 6 ||
+    props.exam.correctRV < 6 ||
+    props.exam.correctSP < 6 ||
+    props.exam.correctGK < 6
+  ) return 'warning'
+  else return 'success'
+})
+
+// Methods
+function formatDate(date: Date) {
+  return new Date(date).toLocaleString('de-DE')
+}
+
+function handleRemoveExam() {
+  appStore.removeExam(props.exam.id)
 }
 </script>
 
 <style scoped>
-.progress-label {
-  float: left;
-  margin-right: 1em;
+.text-caption {
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 </style>

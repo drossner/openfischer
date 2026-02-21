@@ -1,16 +1,8 @@
 <template>
-
+  <div></div>
 </template>
 
-<script>
-export default {
-  name: "index",
-  asyncData({redirect}) {
-    redirect("overview")
-  }
-}
+<script setup lang="ts">
+// Redirect to overview page
+navigateTo('/overview')
 </script>
-
-<style scoped>
-
-</style>
